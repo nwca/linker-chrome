@@ -1,0 +1,35 @@
+<html>
+<head>
+    <link rel="import" href="/bower_components/polymer/polymer.html">
+    <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+    <link rel="import" href="/bower_components/paper-input/paper-input.html">
+    <link rel="import" href="/elements/field.html">
+</head>
+<body>
+    <dom-module id="my-plugin">
+        <template>
+            <iron-ajax
+                    id="getAjax"
+                    auto
+                    url={{fullUrl}}
+                    handle-as="json"
+                    on-response="handle">
+            </iron-ajax>
+            <button type="button" name="add" on-tap="addFields">Add Fields</button>
+            <template is="dom-repeat" items="{{fields}}" index-as="index">
+                <x-field key="{{item.key}}" value="{{item.val}}" on-delete="removeFields"></x-field>
+            </template>
+            <iron-ajax id="xhr"
+                       auto="false"
+                       method="POST"
+                       body={{resRes}}
+                       url={{fullUrl}}
+                       handle-as="json"
+                       content-type="application/json"
+                       debounce-duration="1000">
+            </iron-ajax>
+        </template>
+        <script src="plugin.html.0.js"></script>
+    </dom-module>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<html>
+<head>
+</head>
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-input/paper-input.html">
+<body>
+    <dom-module id="x-field">
+        <template>
+            <form class="form">
+                <paper-input class="pInput" value="{{key}}"></paper-input>
+                <paper-input class="pInput" value="{{value}}"></paper-input>
+                <button id="btnDelete" type="button" on-tap="delete">X</button>
+            </form>
+            <style>
+                .pInput{
+                    width:150px;
+                    padding-left:15px
+                }
+                .form{
+                    display:flex;
+                }
+            </style>
+        </template>
+        <script src="field.html.0.js"></script>
+    </dom-module>
+</body>
+</html>
