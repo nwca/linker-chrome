@@ -3,11 +3,22 @@
     <link rel="import" href="/bower_components/polymer/polymer.html">
     <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
     <link rel="import" href="/bower_components/paper-input/paper-input.html">
+    <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+    <link rel="import" href="/bower_components/paper-fab/paper-fab.html">
     <link rel="import" href="/elements/field.html">
 </head>
 <body>
     <dom-module id="my-plugin">
         <template>
+            <style>
+                :host{
+                    display: block;
+                    width: 350px;
+                }
+                #btnAdd{
+                    margin:auto;
+                }
+            </style>
             <iron-ajax
                     id="getAjax"
                     auto
@@ -15,10 +26,10 @@
                     handle-as="json"
                     on-response="handle">
             </iron-ajax>
-            <button type="button" name="add" on-tap="addFields">Add Fields</button>
             <template is="dom-repeat" items="{{fields}}" index-as="index">
                 <x-field key="{{item.key}}" value="{{item.val}}" on-delete="removeFields"></x-field>
             </template>
+            <paper-fab id="btnAdd" mini icon="add" on-tap="addFields"></paper-fab>
             <iron-ajax id="xhr"
                        auto="false"
                        method="POST"

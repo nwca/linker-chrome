@@ -3,15 +3,23 @@
 </head>
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/paper-input/paper-input.html">
+<link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="/bower_components/paper-fab/paper-fab.html">
 <body>
     <dom-module id="x-field">
         <template>
             <form class="form">
                 <paper-input class="pInput" value="{{key}}"></paper-input>
                 <paper-input class="pInput" value="{{value}}"></paper-input>
-                <button id="btnDelete" type="button" on-tap="delete">X</button>
+                <button id="btnDelete" type="button" on-tap="delete">
+                    <iron-icon mini icon="icons:delete-forever"></iron-icon>
+                </button>
             </form>
             <style>
+                #btnDelete{
+                    height: 30px;
+                    margin-top: auto;
+                }
                 .pInput{
                     width:150px;
                     padding-left:15px

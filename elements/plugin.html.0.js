@@ -8,15 +8,7 @@ chrome.tabs.getSelected(null, tab => {
         },
           base: {
             type: String,
-            value: function () {
-                let protocol = "http://";
-                let host = "www.localhost:";
-                let port = "8080";
-                let api = "/api/notes?url=";
-                let base = protocol + host + port + api;
-                return base;
-
-            }
+            value: " http://www.localhost:8080"
           },
           fullUrl: {
               type:String,
@@ -37,7 +29,7 @@ chrome.tabs.getSelected(null, tab => {
       },
       observers:['changeFields(fields.*)'],
       computeFullUrl: function (base,url) {
-          return base + encodeURIComponent(url);
+          return base +  "/api/notes?url=" + encodeURIComponent(url);
       },
       handle: function (e) {
           let that = this;
@@ -64,7 +56,6 @@ chrome.tabs.getSelected(null, tab => {
                   return acc;
               }, {});
           this.resRes = JSON.stringify({id:this.fullUrl,data:result});
-          this.$.xhr.auto = "false";
           if ((this.fields.length != 0) && ( this.$.getAjax.status === 200)) {
               this.$.xhr.auto = "true";
           }
