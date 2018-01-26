@@ -8,7 +8,7 @@ chrome.tabs.getSelected(null, tab => {
         },
           base: {
             type: String,
-            value: " http://www.localhost:8080"
+            value: "http://www.localhost:8080"
           },
           fullUrl: {
               type:String,
@@ -20,44 +20,58 @@ chrome.tabs.getSelected(null, tab => {
                   return [];
               }
           },
-          resRes: {
-              type: String,
-              value: function () {
-                  return {};
-              }
+          postFields: {
+              type: Object,
+              value: null
+          },
+          getFields: {
+              type: Object,
+              value: null
           }
       },
-      observers:['changeFields(fields.*)'],
+
+      observers:['changeFields(fields.*,getFields)'],
+
       computeFullUrl: function (base,url) {
           return base +  "/api/notes?url=" + encodeURIComponent(url);
       },
+
       handle: function (e) {
-          let that = this;
-          const note = event.detail.response.data.data;
-          const resGet = Object.keys(note)
-              .reduce((acc, key) => {
-                  let a = {key: key,val: note[key]};
-                  that.push('fields',a);
-                  return a;
-              }, [])
+          const note = e.detail.response.data.data || {};
+          const fields = Object.keys(note)
+              .map(key => ({
+                  key: key,
+                  val: note[key]
+              }));
+          this.push('fields', ...fields);
+          this.getFields = note;
       },
-      addFields: function (e) {
+
+      _handleErrorResponse: function (e) {
+          if (e.detail.request.xhr.status === 404) {
+              this.$.xhr.auto = 'true';
+          }
+      },
+
+      addFields: function () {
           this.push('fields', {});
       },
+
       removeFields: function (e) {
           let target = e.model;
           let index = this.fields.indexOf(target.get('item'));
           this.splice('fields', index, 1);
       },
-      changeFields:function (changeRecord,index) {
+
+      changeFields: function (changed) {
           const result = this.fields
               .reduce((acc, obj) => {
                   acc[obj.key] = obj.val;
                   return acc;
               }, {});
-          this.resRes = JSON.stringify({id:this.fullUrl,data:result});
-          if ((this.fields.length != 0) && ( this.$.getAjax.status === 200)) {
-              this.$.xhr.auto = "true";
+          this.postFields = JSON.stringify({id:this.fullUrl,data:result});
+          if ((this.getFields !== null) && (JSON.stringify(this.getFields) !== JSON.stringify(result))) {
+              this.$.xhr.auto = 'true';
           }
       },
   });

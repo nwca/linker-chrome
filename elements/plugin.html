@@ -24,16 +24,16 @@
                     auto
                     url={{fullUrl}}
                     handle-as="json"
-                    on-response="handle">
+                    on-response="handle"
+                    on-error="_handleErrorResponse">
             </iron-ajax>
             <template is="dom-repeat" items="{{fields}}" index-as="index">
                 <x-field key="{{item.key}}" value="{{item.val}}" on-delete="removeFields"></x-field>
             </template>
             <paper-fab id="btnAdd" mini icon="add" on-tap="addFields"></paper-fab>
             <iron-ajax id="xhr"
-                       auto="false"
                        method="POST"
-                       body={{resRes}}
+                       body={{postFields}}
                        url={{fullUrl}}
                        handle-as="json"
                        content-type="application/json"
