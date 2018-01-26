@@ -1,17 +1,26 @@
+class XField extends Polymer.Element {
 
-    Polymer({
-      is:'x-field',
-      properties: {
-          key: {
-              type: String,
-              notify: true
-          },
-          value: {
-              type: String,
-              notify: true
-          }
-      },
-        delete: function () {
-          this.fire('delete');
+    static get is() {
+        return 'x-field'
+    }
+
+    static get properties() {
+        return {
+            key: {
+                type: String,
+                notify: true
+            },
+            value: {
+                type: String,
+                notify: true
+            }
         }
-    });
+    }
+
+    _delete(e) {
+        this.dispatchEvent(new CustomEvent('delete'));
+    }
+
+}
+
+customElements.define(XField.is, XField);
