@@ -8,32 +8,54 @@ chrome.tabs.getSelected(null, tab => {
 
         static get properties() {
             return {
-            url: {
-                type: String,
-                value: tab.url
-            },
-            base: {
-                type: String,
-                value: "http://www.localhost:8080"
-            },
-            fullUrl: {
-                type: String,
-                computed: 'computeFullUrl(base, url)'
-            },
-            fields: {
-                type: Array,
-                value: function () {
-                return [];
+                url: {
+                    type: String,
+                    value: tab.url
+                },
+                base: {
+                    type: String,
+                    value: "http://localhost:8080"
+                },
+                apiV1: {
+                    type: String,
+                    value: "/api/v1/"
+                },
+                fullUrl: {
+                    type: String,
+                    computed: 'computeFullUrl(base, url, apiV1)'
+                },
+                fields: {
+                    type: Array,
+                    value: function () {
+                        return [];
+                    }
+                },
+                postFields: {
+                    type: Object,
+                    value: null
+                },
+                getFields: {
+                    type: Object,
+                    value: null
+                },
+                signInUrl: {
+                    type: String,
+                    computed: 'computeFullSignUrl(base, apiV1)'
+                },
+                providers: {
+                    type: Array,
+                    value: function () {
+                        return [];
+                    }
+                },
+                getUser: {
+                    type: String,
+                    computed: 'computeGetUser(base, apiV1)'
+                },
+                flag: {
+                    type: Boolean,
+                    value: false
                 }
-            },
-            postFields: {
-                type: Object,
-                value: null
-            },
-            getFields: {
-                type: Object,
-                value: null
-            }
             }
         }
 
@@ -45,8 +67,15 @@ chrome.tabs.getSelected(null, tab => {
             return ['changeFields(fields.*,getFields)']
         }
 
-        computeFullUrl(base, url) {
-        return base + "/api/notes?url=" + encodeURIComponent(url);
+        computeFullUrl(base, url, apiV1) {
+            return base + apiV1 + "notes?url=" + (url);
+        }
+
+        computeFullSignUrl(base, apiV1) {
+            return base + apiV1 + "auth/providers"
+        }
+        computeGetUser(base, apiV1) {
+            return base + apiV1 + "me"
         }
 
         handle(e) {
@@ -88,6 +117,28 @@ chrome.tabs.getSelected(null, tab => {
             }
         }
 
+        getProviders(e) {
+            var resProv = e.detail.response.data;
+            const providers = Object.keys(resProv)
+                .map(key => ({
+                    id: resProv.id,
+                    login_url: resProv.login_url
+                }));
+            this.push('providers', ...resProv);
+        }
+
+        singIn(e) {
+            let target = e.model;
+            let index = this.providers.indexOf(target.get('item'));
+            chrome.tabs.create({url: this.providers[index].login_url});
+        };
+
+        currentUser(e) {
+            if (e.detail.response.data != null) {
+                this.flag = !this.flag;
+            }
+            console.log(this.getUser);
+        }
     }
 
     customElements.define(MyPlugin.is, MyPlugin);

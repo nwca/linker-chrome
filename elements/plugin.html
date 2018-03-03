@@ -18,6 +18,10 @@
                 #btnAdd{
                     margin:auto;
                 }
+                .signIn{
+                    background:rgba(0,0,0,0);
+                    margin: auto;
+                }
             </style>
             <iron-ajax
                     id="getAjax"
@@ -30,7 +34,9 @@
             <template is="dom-repeat" items="{{fields}}" index-as="index">
                 <x-field key="{{item.key}}" value="{{item.val}}" on-delete="removeFields"></x-field>
             </template>
+            <template is="dom-if" if="{{flag}}">
             <paper-fab id="btnAdd" mini icon="add" on-tap="addFields"></paper-fab>
+            </template>
             <iron-ajax id="xhr"
                        method="POST"
                        body={{postFields}}
@@ -39,6 +45,28 @@
                        content-type="application/json"
                        debounce-duration="1000">
             </iron-ajax>
+            <iron-ajax
+                    auto
+                    url={{getUser}}
+                    handle-as="json"
+                    on-response="currentUser">
+            </iron-ajax>
+            <iron-ajax
+                    id="getSignInUrl"
+                    auto
+                    url={{signInUrl}}
+                    handle-as="json"
+                    on-response="getProviders">
+            </iron-ajax>
+            <template is="dom-if" if="{{!flag}}">
+            <template is="dom-repeat" items="{{providers}}">
+                <paper-fab class="signIn"
+                           id="{{item.id}}"
+                           on-tap="singIn"
+                           src="/img/login-{{item.id}}.png">
+                </paper-fab>
+            </template>
+            </template>
         </template>
         <script src="plugin.html.0.js"></script>
     </dom-module>

@@ -1,0 +1,40 @@
+<html>
+<head>
+    <link rel="import" href="/bower_components/polymer/polymer.html">
+    <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+    <link rel="import" href="/bower_components/paper-fab/paper-fab.html">
+</head>
+<body>
+<dom-module id="sign-in">
+    <template>
+        <style>
+            .signIn{
+                background:rgba(0,0,0,0);
+            }
+        </style>
+        <iron-ajax
+                auto
+                url={{getUser}}
+                handle-as="json"
+                on-response="currentUser">
+        </iron-ajax>
+        <iron-ajax
+                id="getSignInUrl"
+                auto
+                url={{signInUrl}}
+                handle-as="json"
+                on-response="getProviders">
+        </iron-ajax>
+        <template is="dom-repeat" items="{{provider}}">
+            <paper-fab class="signIn"
+                       id="{{item.id}}"
+                       on-tap="singIn"
+                       src="/img/login-{{item.id}}.png">
+            </paper-fab>
+        </template>
+        </template>
+    </template>
+    <script src="signIn.html.0.js"></script>
+</dom-module>
+</body>
+</html>

@@ -13,6 +13,8 @@
 
   },
   "permissions": [
-    "tabs"
+    "tabs",
+    "http://localhost/*"
+
   ]
 }
