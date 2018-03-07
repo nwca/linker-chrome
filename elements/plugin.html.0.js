@@ -127,7 +127,7 @@ chrome.tabs.getSelected(null, tab => {
             this.push('providers', ...resProv);
         }
 
-        singIn(e) {
+        signIn(e) {
             let target = e.model;
             let index = this.providers.indexOf(target.get('item'));
             chrome.tabs.create({url: this.providers[index].login_url});
@@ -137,7 +137,6 @@ chrome.tabs.getSelected(null, tab => {
             if (e.detail.response.data != null) {
                 this.flag = !this.flag;
             }
-            console.log(this.getUser);
         }
     }
 
