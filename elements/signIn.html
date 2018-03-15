@@ -3,29 +3,53 @@
     <link rel="import" href="/bower_components/polymer/polymer.html">
     <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
     <link rel="import" href="/bower_components/paper-fab/paper-fab.html">
+    <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+    <link rel="import" href="/bower_components/iron-image/iron-image.html">
+    <link rel="import" href="/bower_components/paper-button/paper-button.html">
 </head>
 <body>
 <dom-module id="sign-in">
     <template>
         <style>
-            .btnSign{
-                background:rgba(0,0,0,0);
-                border-radius: 50%;
-                width: 56px;
-                height: 56px;
-                border: none;
-                padding: 0;
+            :host{
+                display: flex;
+                justify-content: center;
             }
-            .btnSign img{
-                width: 100%;
+            .provider{
+                display: flex;
+                width: 60px;
+                height: 60px;
+            }
+            paper-button{
+                border-radius: 50%;
+                padding:0;
             }
         </style>
-            <button class="btnSign"
-                    providersId="{{provId}}"
-                    on-click="_sign"
-            ><img id="providersImg" src="{{provImg}}" alt="{{provId}}" onerror="{{failedLoadImage}}"></button>
+        <iron-ajax
+                id="getSignInUrl"
+                auto
+                url={{signInUrl}}
+                handle-as="json"
+                on-response="getProviders">
+        </iron-ajax>
+        <iron-ajax
+                id="getUser"
+                auto
+                url={{getUser}}
+                handle-as="json"
+                on-response="currentUser">
+        </iron-ajax>
+        <template is="dom-repeat" items="{{providers}}">
+            <paper-button class="btnSign">
+                <iron-image placeholder="/img/login-unrecognized.png"
+                            sizing="cover" preload src="/img/login-{{item.id}}.png"
+                            class="provider"
+                            on-tap="signIn">
+                </iron-image>
+            </paper-button>
     </template>
-    <script src="signIn.html.0.js"></script>
+    </template>
+    <script src="signIn.js"></script>
 </dom-module>
 </body>
 </html>

@@ -38,23 +38,32 @@ chrome.tabs.getSelected(null, tab => {
                     type: Object,
                     value: null
                 },
-                signInUrl: {
-                    type: String,
-                    computed: 'computeFullSignUrl(base, apiV1)'
+                userAvatar: {
+                    type: String
                 },
-                providers: {
-                    type: Array,
-                    value: function () {
-                        return [];
-                    }
-                },
-                getUser: {
-                    type: String,
-                    computed: 'computeGetUser(base, apiV1)'
-                },
-                flag: {
+                loggedIn: {
                     type: Boolean,
-                    value: false
+                    value: null
+                },
+                starRating: {
+                    type: String,
+                    value: null
+                },
+                like: {
+                    type: Boolean,
+                    value: null
+                },
+                description: {
+                    type: String,
+                    value: null
+                },
+                linkType: {
+                    type: String,
+                    value: null
+                },
+                linkTitle: {
+                    type: String,
+                    value: null
                 }
             }
         }
@@ -64,23 +73,29 @@ chrome.tabs.getSelected(null, tab => {
         }
 
         static get observers() {
-            return ['changeFields(fields.*,getFields)']
+            return ['changeFields(fields.*,getFields,starRating,description,like)']
         }
 
         computeFullUrl(base, url, apiV1) {
             return base + apiV1 + "notes?url=" + (url);
         }
 
-        computeFullSignUrl(base, apiV1) {
-            return base + apiV1 + "auth/providers"
-        }
-        computeGetUser(base, apiV1) {
-            return base + apiV1 + "me"
-        }
-
         handle(e) {
             const note = e.detail.response.data.data || {};
-            const fields = Object.keys(note)
+            const {
+                description,
+                star,
+                like,
+                type,
+                title,
+                ...noteFields
+            } = note;
+            this.description = description;
+            this.starRating = +star;
+            this.linkType = type;
+            this.linkTitle = title;
+            this.like =JSON.parse(like);
+            const fields = Object.keys(noteFields)
                 .map(key => ({
                     key: key,
                     val: note[key]
@@ -106,36 +121,26 @@ chrome.tabs.getSelected(null, tab => {
         }
 
         changeFields(changed) {
+            this.userAvatar = this.$.signIn.userAvatar;
+            this.loggedIn = this.$.signIn.loggedIn;
+            this.like = this.$.like.like;
+            this.description = this.$.description.description;
+            this.starRating = this.$.starRating.value;
+            this.linkTitle = this.$.title.ltitle;
+            this.linkType = this.$.type.ltype;
             const result = this.fields
                 .reduce((acc, obj) => {
                     acc[obj.key] = obj.val;
                     return acc;
                 }, {});
+            result['description'] = this.description;
+            result['like'] = JSON.stringify(this.like);
+            result['star'] = JSON.stringify(this.starRating);
+            result['title'] = this.linkTitle;
+            result['type'] = this.linkType;
             this.postFields = JSON.stringify({id: this.fullUrl, data: result});
             if ((this.getFields !== null) && (JSON.stringify(this.getFields) !== JSON.stringify(result))) {
                 this.$.xhr.auto = 'true';
-            }
-        }
-
-        getProviders(e) {
-            var resProv = e.detail.response.data;
-            const providers = Object.keys(resProv)
-                .map(key => ({
-                    id: resProv.id,
-                    login_url: resProv.login_url
-                }));
-            this.push('providers', ...resProv);
-        }
-
-        signIn(e) {
-            let target = e.model;
-            let index = this.providers.indexOf(target.get('item'));
-            chrome.tabs.create({url: this.providers[index].login_url});
-        };
-
-        currentUser(e) {
-            if (e.detail.response.data != null) {
-                this.flag = !this.flag;
             }
         }
     }
