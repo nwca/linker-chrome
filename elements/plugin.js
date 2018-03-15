@@ -102,12 +102,14 @@ chrome.tabs.getSelected(null, tab => {
                 }));
             this.push('fields', ...fields);
             this.getFields = note;
+            Polymer.dom(this.root).removeChild(this.$.loader)
         }
 
         _handleErrorResponse(e) {
             if (e.detail.request.xhr.status === 404) {
                 this.$.xhr.auto = 'true';
             }
+            this.$.getAjax.generateRequest();
         }
 
         addFields() {

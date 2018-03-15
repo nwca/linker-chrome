@@ -51,6 +51,7 @@
                        content-type="application/json"
                        debounce-duration="1000">
             </iron-ajax>
+            <paper-spinner id="loader" active="{{loader}}"></paper-spinner>
             <div class="plugin" hidden$="{{!loggedIn}}">
             <div class="grid">
                 <div class="links">
