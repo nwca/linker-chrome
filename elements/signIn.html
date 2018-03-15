@@ -6,6 +6,7 @@
     <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
     <link rel="import" href="/bower_components/iron-image/iron-image.html">
     <link rel="import" href="/bower_components/paper-button/paper-button.html">
+    <link rel="import" href="/bower_components/paper-tooltip/paper-tooltip.html">
 </head>
 <body>
 <dom-module id="sign-in">
@@ -23,6 +24,10 @@
             paper-button{
                 border-radius: 50%;
                 padding:0;
+            }
+            .popup{
+                --paper-tooltip-duration-in: 0ms;
+                --paper-tooltip-duration-out: 0ms;
             }
         </style>
         <iron-ajax
@@ -44,9 +49,11 @@
                 <iron-image placeholder="/img/login-unrecognized.png"
                             sizing="cover" preload src="/img/login-{{item.id}}.png"
                             class="provider"
+                            id="{{item.id}}"
                             on-tap="signIn">
                 </iron-image>
             </paper-button>
+            <paper-tooltip class="popup" for="{{item.id}}" position="top">{{item.id}}</paper-tooltip>
     </template>
     </template>
     <script src="signIn.js"></script>
