@@ -1,0 +1,190 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-ripple/paper-ripple.html">
+<link rel="import" href="../paper-material/paper-material.html">
+
+<!--
+  `paper-autocomplete-suggestions`
+
+  **From v3.x.x, this component only works with Polymer 1.7+ or 2.0+.**
+
+  [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/ellipticaljs/paper-autocomplete)
+
+  [![Sauce Test Status](https://saucelabs.com/browser-matrix/jhuesos.svg)](https://saucelabs.com/u/jhuesos)
+
+  Allows to add autocomplete capabilities to any input field. This is desirable when you have an input field with custom
+  logic and you just want to add the feature to help users with the selection. If you want to use it in combination with
+  a regular `<paper-input>`, you can use `<paper-autocomplete>`.
+
+  Example:
+  ```
+  <div class="autocomplete-wrapper">
+    <paper-input id="myInput" label="Select State"></paper-input>
+
+    <paper-autocomplete-suggestions
+      for="myInput"
+      source="[[accounts]]"></paper-autocomplete-suggestions>
+  </div>
+  ```
+
+  It is **important to provide both `textProperty` and `valueProperty` when working with a custom search function and
+  or custom templates.** They are needed to keep the component accessible and for the events (e.g. onSelect) to keep
+  working.
+
+  ### About Polymer 1.x and 2.x Compatibility
+  From version `3.x.x`, this component work with both Polymer 1.7+ or Polymer 2.0+ Please take a look to the
+  [MIGRATION.md](./MIGRATION.md) file that contains more information.
+
+  ### Custom search
+  This component has the public method `queryFn` that is called in each key stroke and it is responsible to query
+  all items in the `source` and returns only those items that matches certain filtering criteria. By default, this
+  component search for items that start with the recent query (case insensitive).
+  You can override this behavior providing your own query function, as long as these two requirements are fulfill:
+
+  - The query function is synchronous.
+  - The API is respected and the method always return an Array.
+
+
+  The template use to render each suggestion depends on the structure of each object that this method returns. For the
+  default template, each suggestion should follow this object structure:
+
+  ```
+    {
+      text: objText,
+      value: objValue
+    }
+  ```
+
+  This function is only used when a local data source is used. When using a `remoteDataSource` user is responsible of
+  doing the search and specify suggestions manually.
+
+  ### Custom templates
+  A template for each suggestion can be provided, but for now, there are limitations in the way you can customize
+  the template. Please read the the following sections carefully.
+  In order to set your own template, you need to add a `<template>` tag with the slot name
+  `autocomplete-custom-template` and a structure equivalent to the one shown in the `<account-autocomplete>` component in
+  the demo.
+
+  You need to always maintain this structure. Then you can customize the content of paper-item. These are the reasons
+  why you need to maintain it:
+
+  - `onSelectHandler` it is very important because it will notify the `autocomplete` component when user selects one item.
+  If you don't add this option, when user clicks in one of the items, nothing will happen.
+  - `id`, `role` and `aria-selected` need to be there for accessibility reasons. If you don't set them, the component
+  will continue working but it will not be accessible for user with disabilities.
+
+
+  It is important to clarify that methods `_onSelect` and `_getSuggestionId` do not need to be implemented. They are
+  part of the logic of `paper-autocomplete-suggestions`.
+
+  When providing your own custom template, you might also need to provide your own custom search function. The reason
+  for that is that the default search function only exposes text and value in the results. If each item in your data
+  source contains more information, then you won't be able to access it. See the code of `<address-autocomplete>`
+  element in the demo folder for a complete example.
+
+  Another important thing to point out is related to the height of each suggestion item in the results. The height of
+  the suggestion template changes dynamically depending on the height of a suggestion item. However, the following
+  assumptions were made:
+  - All suggestions items have the same height
+  - The height of each item is fixed and can be determined at any time. For example, if you want to use images in the
+  results, make sure they have a placeholder or a fixed height.
+
+
+  ### Styling
+
+  `<paper-autocomplete-suggestions>` provides the following custom properties and mixins
+  for styling:
+
+  Custom property | Description | Default
+  ----------------|-------------|----------
+  `--paper-item-min-height` | paper item min height | `36px`
+  `--suggestions-wrapper` | mixin to apply to the suggestions container | `{}`
+  `--suggestions-item` | mixin to apply to the suggestions items | `{}`
+
+  ### Accessibility
+  This component exposes certain necessary values in order to make your component accessible. When checking the ARIA
+  specs, it is said that you need to inform users of the following changes:
+  - Whether the popup with suggestions is open or not.
+  - Id of the currently highlighted element
+
+ You can access these values using the following properties: `isOpen` and `highlightedSuggestion`. The id of each
+ element in highlightedSuggestion a random and unique id.
+
+ In addition, as long as developers follow the general structure of each suggestion template, the following A11Y
+ features are set in each suggestion:
+ - `role="option"`
+ - `aria-selected="true|false"`. This value will be false for all suggestion except in the one which is currently
+ highlighted.
+
+ By default, suggestions are only displayed after the user types, even if the current input should display them. If
+  you want to show suggestions on focus (when available), you should add the property `show-results-on-focus`.
+
+  @demo demo/paper-autocomplete-suggestions-demo.html
+-->
+
+<dom-module id="paper-autocomplete-suggestions">
+  <template>
+    <style>
+      paper-material {
+        display: none;
+        position: absolute;
+        width: 100%;
+        z-index: 1000;
+        background-color: white;
+        max-height: 252px;
+        overflow-y: auto;
+
+        @apply --suggestions-wrapper;
+      }
+
+      paper-item,
+      :host ::slotted(paper-item) {
+        min-height: var(--paper-item-min-height, 36px);
+        padding: 0 16px;
+        position: relative;
+        line-height: 18px;
+
+        @apply --suggestions-item;
+      }
+
+      paper-item:hover,
+      :host ::slotted(paper-item:hover) {
+        background: #eee;
+        color: #333;
+        cursor: pointer;
+      }
+
+      paper-item.active,
+      :host ::slotted(paper-item.active) {
+        background: #eee;
+        color: #333;
+      }
+
+      /**
+       * IE11 paper-item min-height bug: https://github.com/PolymerElements/paper-item/issues/35
+       */
+      @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+        paper-item {
+          height: var(--paper-item-min-height, 36px);
+        }
+      }
+    </style>
+    <div>
+      <!-- unselectable is needed to fix an issue related to the focus being taken away when clicking in the
+       results scrollbar -->
+      <paper-material elevation="1" id="suggestionsWrapper" unselectable="on"></paper-material>
+
+      <!-- Default suggestion template -->
+      <template id="defaultTemplate">
+        <paper-item id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false" on-tap="_onSelect">
+          <div>[[_getItemText(item)]]</div>
+          <paper-ripple></paper-ripple>
+        </paper-item>
+      </template>
+
+  <!-- Custom template -->
+  <slot id="templates" name="autocomplete-custom-template"></slot>
+  </div>
+  </template>
+</dom-module>
+<script src="paper-autocomplete-suggestions.js"></script>
