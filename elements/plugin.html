@@ -6,8 +6,14 @@
     <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
     <link rel="import" href="/bower_components/paper-fab/paper-fab.html">
     <link rel="import" href="/bower_components/paper-spinner/paper-spinner.html">
+    <link rel="import" href="/bower_components/iron-star-rating/iron-star-rating.html">
     <link rel="import" href="/elements/field.html">
     <link rel="import" href="/elements/signIn.html">
+    <link rel="import" href="/elements/avatar.html">
+    <link rel="import" href="/elements/like.html">
+    <link rel="import" href="/elements/description.html">
+    <link rel="import" href="/elements/linkType.html">
+    <link rel="import" href="/elements/linkTitle.html">
 </head>
 <body>
     <dom-module id="my-plugin">
@@ -15,36 +21,28 @@
             <style>
                 :host{
                     display: block;
-                    width: 350px;
+                    width: 450px;
                 }
                 #btnAdd{
                     margin:auto;
                 }
-                .signIn{
-                    background:rgba(0,0,0,0);
-                    margin: auto;
+                .grid{
+                    display: grid;
+                    grid-template-columns: 200px 125px 50px;
+                    grid-gap: 40px
                 }
-                #providers{
-                    display: flex;
-                    justify-content: center;
+                .mark{
+                    margin-top:70px;
                 }
             </style>
-            <iron-ajax
-                    id="getAjax"
-                    auto
-                    url={{fullUrl}}
-                    handle-as="json"
-                    on-response="handle"
-                    on-error="_handleErrorResponse"
-                    loading="{{loader}}">
+            <iron-ajax id="getAjax"
+                        auto
+                        url={{fullUrl}}
+                        handle-as="json"
+                        on-response="handle"
+                        on-error="_handleErrorResponse"
+                        loading="{{loader}}">
             </iron-ajax>
-                <paper-spinner active="[[loader]]"></paper-spinner>
-            <template is="dom-repeat" items="{{fields}}" index-as="index">
-                <x-field key="{{item.key}}" value="{{item.val}}" on-delete="removeFields"></x-field>
-            </template>
-            <template is="dom-if" if="{{flag}}">
-            <paper-fab id="btnAdd" mini icon="add" on-tap="addFields"></paper-fab>
-            </template>
             <iron-ajax id="xhr"
                        method="POST"
                        body={{postFields}}
@@ -53,30 +51,30 @@
                        content-type="application/json"
                        debounce-duration="1000">
             </iron-ajax>
-            <iron-ajax
-                    auto
-                    url={{getUser}}
-                    handle-as="json"
-                    on-response="currentUser">
-            </iron-ajax>
-            <iron-ajax
-                    id="getSignInUrl"
-                    auto
-                    url={{signInUrl}}
-                    handle-as="json"
-                    on-response="getProviders">
-            </iron-ajax>
-            <div id="providers">
-            <template is="dom-if" if="{{!flag}}">
-                <template is="dom-repeat" items="{{providers}}">
-                    <sign-in prov-Id="{{item.id}}"
-                             prov-Img="/img/login-{{item.id}}.png"
-                             on-sign="signIn"></sign-in >
+            <div class="plugin" hidden$="{{!loggedIn}}">
+            <div class="grid">
+                <!--<paper-spinner active="[[loader]]"></paper-spinner>-->
+                <div class="links">
+                    <link-type id="type" ltype="{{linkType}}"></link-type>
+                    <link-title id="title" ltitle="{{linkTitle}}"></link-title>
+                </div>
+                <div class="mark">
+                    <like-dislike id="like" like="{{like}}"></like-dislike>
+                    <iron-star-rating id="starRating" value="{{starRating}}"></iron-star-rating>
+                </div>
+                <user-avatar avatar={{userAvatar}}></user-avatar>
+            </div>
+                <x-description id="description" description="{{description}}"></x-description>
+                <template is="dom-repeat" items="{{fields}}" index-as="index">
+                    <x-field key="{{item.key}}" value="{{item.val}}" on-delete="removeFields"></x-field>
                 </template>
-            </template>
+            <paper-fab id="btnAdd" mini icon="add" on-tap="addFields"></paper-fab>
+            </div>
+            <div id="providers" hidden$="{{loggedIn}}">
+                <sign-in id="signIn"></sign-in>
             </div>
         </template>
-        <script src="plugin.html.0.js"></script>
+        <script src="plugin.js"></script>
     </dom-module>
 </body>
 </html>

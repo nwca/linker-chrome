@@ -1,0 +1,33 @@
+<html>
+<head>
+    <link rel="import" href="/bower_components/polymer/polymer.html">
+    <link rel="import" href="/bower_components/paper-fab/paper-fab.html">
+    <link rel="import" href="/bower_components/iron-icons/maps-icons.html">
+</head>
+<body>
+<dom-module id="like-dislike">
+    <template>
+        <style>
+            :host{
+                display: flex;
+            }
+            .thumb{
+                width: 30px;
+                height: 30px;
+                padding: 0;
+                background: transparent;
+                margin: 0 5px;
+		        box-shadow: none;
+		        color:grey;
+            }
+            .active{
+                color: #000000;
+            }
+        </style>
+        <paper-fab class="thumb" id="thumbUp" on-tap="changer" mini icon="icons:thumb-up"></paper-fab>
+        <paper-fab class="thumb" id="thumbDown" on-tap="changer" mini icon="icons:thumb-down"></paper-fab>
+    </template>
+    <script src="like.js"></script>
+</dom-module>
+</body>
+</html>
