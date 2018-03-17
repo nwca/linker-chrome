@@ -35,6 +35,10 @@
                     margin-top:70px;
                 }
             </style>
+            <paper-spinner id="loader" active="{{loader}}"></paper-spinner>
+            <div id="providers" hidden$="{{loggedIn}}">
+                <sign-in id="signIn"></sign-in>
+            </div>
             <iron-ajax id="getAjax"
                         auto
                         url={{fullUrl}}
@@ -51,12 +55,11 @@
                        content-type="application/json"
                        debounce-duration="1000">
             </iron-ajax>
-            <paper-spinner id="loader" active="{{loader}}"></paper-spinner>
             <div class="plugin" hidden$="{{!loggedIn}}">
             <div class="grid">
                 <div class="links">
-                    <link-type id="type" ltype="{{linkType}}"></link-type>
                     <link-title id="title" ltitle="{{linkTitle}}"></link-title>
+                    <link-type id="type" ltype="{{linkType}}"></link-type>
                 </div>
                 <div class="mark">
                     <like-dislike id="like" like="{{like}}"></like-dislike>
@@ -69,9 +72,6 @@
                     <x-field key="{{item.key}}" value="{{item.val}}" on-delete="removeFields"></x-field>
                 </template>
             <paper-fab id="btnAdd" mini icon="add" on-tap="addFields"></paper-fab>
-            </div>
-            <div id="providers" hidden$="{{loggedIn}}">
-                <sign-in id="signIn"></sign-in>
             </div>
         </template>
         <script src="plugin.js"></script>

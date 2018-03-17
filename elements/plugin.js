@@ -46,8 +46,8 @@ chrome.tabs.getSelected(null, tab => {
                     value: null
                 },
                 starRating: {
-                    type: String,
-                    value: null
+                    type: Number,
+                    value: 0
                 },
                 like: {
                     type: Boolean,
@@ -55,7 +55,7 @@ chrome.tabs.getSelected(null, tab => {
                 },
                 description: {
                     type: String,
-                    value: null
+                    value: ' '
                 },
                 linkType: {
                     type: String,
@@ -73,7 +73,7 @@ chrome.tabs.getSelected(null, tab => {
         }
 
         static get observers() {
-            return ['changeFields(fields.*,getFields,starRating,description,like)']
+            return ['changeFields(fields.*,getFields,starRating,description,like,linkType,linkTitle)']
         }
 
         computeFullUrl(base, url, apiV1) {
@@ -94,7 +94,9 @@ chrome.tabs.getSelected(null, tab => {
             this.starRating = +star;
             this.linkType = type;
             this.linkTitle = title;
-            this.like =JSON.parse(like);
+            if ((like !== null) && (like !== undefined)) {
+                this.like = JSON.parse(like);
+            }
             const fields = Object.keys(noteFields)
                 .map(key => ({
                     key: key,
@@ -106,10 +108,10 @@ chrome.tabs.getSelected(null, tab => {
         }
 
         _handleErrorResponse(e) {
-            if (e.detail.request.xhr.status === 404) {
-                this.$.xhr.auto = 'true';
+            if(e.detail.request.xhr.status === 404) {
+                this.$.xhr.generateRequest();
+                this.$.getAjax.generateRequest();
             }
-            this.$.getAjax.generateRequest();
         }
 
         addFields() {
@@ -135,11 +137,22 @@ chrome.tabs.getSelected(null, tab => {
                     acc[obj.key] = obj.val;
                     return acc;
                 }, {});
-            result['description'] = this.description;
-            result['like'] = JSON.stringify(this.like);
-            result['star'] = JSON.stringify(this.starRating);
-            result['title'] = this.linkTitle;
-            result['type'] = this.linkType;
+            if ((this.description !== ' ') && (this.description !== '')) {
+                result['description'] = this.description;
+            }
+            if (this.like !== null)
+            {
+                result['like'] = JSON.stringify(this.like);
+            }
+            if ((!isNaN(this.starRating)) && (this.starRating !== 0)) {
+                result['star'] = JSON.stringify(this.starRating);
+            }
+            if (this.linkTitle !== ''){
+                result['title'] = this.linkTitle;
+            }
+            if (this.linkType !== ''){
+                result['type'] = this.linkType;
+            }
             this.postFields = JSON.stringify({id: this.fullUrl, data: result});
             if ((this.getFields !== null) && (JSON.stringify(this.getFields) !== JSON.stringify(result))) {
                 this.$.xhr.auto = 'true';
