@@ -64,6 +64,10 @@ chrome.tabs.getSelected(null, tab => {
                 linkTitle: {
                     type: String,
                     value: null
+                },
+                flag: {
+                    type: Boolean,
+                    value: true
                 }
             }
         }
@@ -80,6 +84,11 @@ chrome.tabs.getSelected(null, tab => {
             return base + apiV1 + "notes?url=" + (url);
         }
 
+        checkStatus(e) {
+            if (e.detail.status === 200){
+                this.flag = true;
+            }
+        }
         handle(e) {
             const note = e.detail.response.data.data || {};
             const {
@@ -156,6 +165,7 @@ chrome.tabs.getSelected(null, tab => {
             this.postFields = JSON.stringify({id: this.fullUrl, data: result});
             if ((this.getFields !== null) && (JSON.stringify(this.getFields) !== JSON.stringify(result))) {
                 this.$.xhr.auto = 'true';
+                this.flag = false;
             }
         }
     }

@@ -25,10 +25,6 @@ class XField extends Polymer.Element {
             value: {
                 type: String,
                 notify: true
-            },
-            autocompleteKey:{
-                type: Array,
-                value:[]
             }
         }
     }

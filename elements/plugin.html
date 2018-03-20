@@ -14,6 +14,7 @@
     <link rel="import" href="/elements/description.html">
     <link rel="import" href="/elements/linkType.html">
     <link rel="import" href="/elements/linkTitle.html">
+    <link rel="import" href="/elements/chekedSending.html">
 </head>
 <body>
     <dom-module id="my-plugin">
@@ -28,11 +29,12 @@
                 }
                 .grid{
                     display: grid;
-                    grid-template-columns: 200px 125px 50px;
-                    grid-gap: 40px
+                    grid-template-columns: 25px 200px 150px 50px;
+                    grid-gap: 10px;
                 }
                 .mark{
                     margin-top:70px;
+                    margin-left: 20px
                 }
             </style>
             <paper-spinner id="loader" active="{{loader}}"></paper-spinner>
@@ -52,11 +54,13 @@
                        body={{postFields}}
                        url={{fullUrl}}
                        handle-as="json"
+                       on-response="checkStatus"
                        content-type="application/json"
                        debounce-duration="1000">
             </iron-ajax>
             <div class="plugin" hidden$="{{!loggedIn}}">
             <div class="grid">
+                <checked-sending flag="{{flag}}" status="{{!flag}}"></checked-sending>
                 <div class="links">
                     <link-title id="title" ltitle="{{linkTitle}}"></link-title>
                     <link-type id="type" ltype="{{linkType}}"></link-type>
