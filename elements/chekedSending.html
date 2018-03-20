@@ -1,0 +1,17 @@
+<html>
+<head>
+    <link rel="import" href="/bower_components/polymer/polymer.html">
+    <link rel="import" href="/bower_components/paper-spinner/paper-spinner.html">
+    <link rel="import" href="/bower_components/iron-icons/maps-icons.html">
+</head>
+<body>
+<dom-module id="checked-sending">
+    <template>
+        <iron-icon hidden$="{{flag}}" icon="icons:close" style="color: red"></iron-icon>
+        <iron-icon hidden$="{{!flag}}" icon="icons:check" style="color: green"></iron-icon>
+        <paper-spinner active="{{status}}"></paper-spinner>
+    </template>
+    <script src="chekedSending.js"></script>
+</dom-module>
+</body>
+</html>
