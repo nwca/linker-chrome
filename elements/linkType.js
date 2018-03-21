@@ -26,7 +26,7 @@ class LType extends Polymer.Element {
         }
     }
     computeFullUrl(base, apiV1) {
-        return base + apiV1 + "preds?q=";
+        return base + apiV1 + "types";
     }
 
 }
