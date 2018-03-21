@@ -28,14 +28,14 @@
                 }
                 .grid{
                     display: grid;
-                    grid-template-columns: 200px 125px 50px;
-                    grid-gap: 40px
+                    grid-template-columns: 1fr 125px 50px;
+                    grid-gap: 14px
                 }
                 .mark{
-                    margin-top:70px;
+                    margin-top:10px;
                 }
             </style>
-            <paper-spinner id="loader" active="{{loader}}"></paper-spinner>
+            <paper-spinner id="loader" active="{{loader}}" hidden$="{{!loader}}"></paper-spinner>
             <div id="providers" hidden$="{{loggedIn}}">
                 <sign-in id="signIn"></sign-in>
             </div>

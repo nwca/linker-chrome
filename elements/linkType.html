@@ -6,7 +6,22 @@
 <body>
 <dom-module id="link-type">
     <template>
-        <paper-input value="{{ltype}}"></paper-input>
+        <style>
+            paper-input {
+                --paper-input-container: {
+                    padding: 0 0 0 10px;
+                };
+                --paper-font-subhead_-_font-size: 14px;
+                --paper-input-container-input-color: #757575;
+                --paper-input-container-underline: {
+                    display: none;
+                };
+                --paper-font-caption: {
+                    display: none;
+                };
+            }
+        </style>
+        <paper-input value="{{ltype}}" placeholder="object type"></paper-input>
     </template>
     <script src="linkType.js"></script>
 </dom-module>

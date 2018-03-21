@@ -9,10 +9,19 @@
         <style>
             :host{
                 display: block;
-                margin: 0 15px;
+                margin: 0 8px;
+            }
+            paper-textarea {
+                --paper-font-subhead_-_font-size: 12px;
+                --paper-input-container-underline: {
+                    display: none;
+                };
+                --paper-font-caption: {
+                    display: none;
+                };
             }
         </style>
-        <paper-textarea label="Description text goes here" value="{{description}}"></paper-textarea>
+        <paper-textarea rows="2" placeholder="You can enter page notes here" value="{{description}}"></paper-textarea>
     </template>
     <script src="description.js"></script>
 </dom-module>
