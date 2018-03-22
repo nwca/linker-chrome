@@ -1,17 +1,17 @@
 class UserAvatar extends Polymer.Element {
 
-    static get is() {
-        return 'user-avatar'
-    }
+   static get is() {
+      return 'user-avatar'
+   }
 
-    static get properties() {
-        return {
-            avatar: {
-                type: String,
-                notify: true
-            }
-        }
-    }
+   static get properties() {
+      return {
+         avatar: {
+            type: String,
+            notify: true
+         }
+      }
+   }
 
 
 }

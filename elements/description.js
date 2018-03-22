@@ -1,18 +1,18 @@
 class XDescription extends Polymer.Element {
 
-    static get is() {
-        return 'x-description'
-    }
+   static get is() {
+      return 'x-description'
+   }
 
-    static get properties() {
-        return {
-            description:{
-                type: String,
-                value: null,
-                notify: true,
-            }
-        }
-    }
+   static get properties() {
+      return {
+         description: {
+            type: String,
+            value: null,
+            notify: true,
+         }
+      }
+   }
 
 }
 

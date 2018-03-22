@@ -8,48 +8,51 @@
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="/bower_components/paper-autocomplete/paper-autocomplete-suggestions.html">
 <body>
-    <dom-module id="x-field">
-        <template>
-            <style>
-                #btnDelete{
-                    border-radius: 0;
-                    margin-top: auto;
-                    margin-left: 10px;
-                    background: rgba(0,0,0,0);
-                    color: #000;
-                    box-shadow: none;
-                }
-                .pInput{
-                    width: 100%;
-                    padding-left: 14px
-                }
-                .form{
-                    display:flex;
-                }
-                paper-input {
-                    --paper-font-subhead_-_font-size: 14px;
-                    --paper-font-caption: {
-                        display: none;
-                    };
-                }
-            </style>
-            <iron-ajax id="getAutoKey"
-                       auto
-                       url={{autoKey}}
-                       handle-as="json"
-                       last-response="{{handle}}">
-            </iron-ajax>
-            <form class="form">
-                    <paper-input class="pInput" id="myInput" value="{{key}}"></paper-input>
-                    <paper-autocomplete-suggestions
-                            for="myInput"
-                            source="{{handle.data.pred}}">
-                    </paper-autocomplete-suggestions>
-                <paper-input class="pInput" value="{{value}}"></paper-input>
-                <paper-fab id="btnDelete" mini icon="icons:delete-forever" on-tap="_delete"></paper-fab>
-            </form>
-        </template>
-        <script src="field.js"></script>
-    </dom-module>
+<dom-module id="x-field">
+    <template>
+        <style>
+            #btnDelete {
+                border-radius: 0;
+                margin-top: auto;
+                margin-left: 10px;
+                background: rgba(0, 0, 0, 0);
+                color: #000;
+                box-shadow: none;
+            }
+
+            .pInput {
+                width: 100%;
+                padding-left: 14px
+            }
+
+            .form {
+                display: flex;
+            }
+
+            paper-input {
+                --paper-font-subhead_-_font-size: 14px;
+                --paper-font-caption: {
+                    display: none;
+                };
+            }
+        </style>
+        <iron-ajax id="getAutoKey"
+                   auto
+                   url="{{autoKey}}"
+                   handle-as="json"
+                   last-response="{{handle}}">
+        </iron-ajax>
+        <form class="form">
+            <paper-input class="pInput" id="myInput" value="{{key}}"></paper-input>
+            <paper-autocomplete-suggestions
+                    for="myInput"
+                    source="{{handle.data.pred}}">
+            </paper-autocomplete-suggestions>
+            <paper-input class="pInput" value="{{value}}"></paper-input>
+            <paper-fab id="btnDelete" mini icon="icons:delete-forever" on-tap="_delete"></paper-fab>
+        </form>
+    </template>
+    <script src="field.js"></script>
+</dom-module>
 </body>
 </html>

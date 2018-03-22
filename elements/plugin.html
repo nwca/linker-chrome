@@ -29,12 +29,11 @@
                 }
                 .grid{
                     display: grid;
-                    grid-template-columns: 1fr 125px 50px;
-                    grid-gap: 14px
+                    grid-template-columns: 1fr 125px 20px 50px;
+                    grid-gap: 8px;
                 }
                 .mark{
                     margin-top:10px;
-                    margin-left: 20px
                 }
             </style>
             <paper-spinner id="loader" active="{{loader}}" hidden$="{{!loader}}"></paper-spinner>
@@ -43,7 +42,7 @@
             </div>
             <iron-ajax id="getAjax"
                         auto
-                        url={{fullUrl}}
+                        url="{{fullUrl}}"
                         handle-as="json"
                         on-response="handle"
                         on-error="_handleErrorResponse"
@@ -51,31 +50,31 @@
             </iron-ajax>
             <iron-ajax id="xhr"
                        method="POST"
-                       body={{postFields}}
-                       url={{fullUrl}}
+                       body="{{postFields}}"
+                       url="{{fullUrl}}"
                        handle-as="json"
                        on-response="checkStatus"
                        content-type="application/json"
                        debounce-duration="1000">
             </iron-ajax>
             <div class="plugin" hidden$="{{!loggedIn}}">
-            <div class="grid">
-                <checked-sending flag="{{flag}}" status="{{!flag}}"></checked-sending>
-                <div class="links">
-                    <link-title id="title" ltitle="{{linkTitle}}"></link-title>
-                    <link-type id="type" ltype="{{linkType}}"></link-type>
+                <div class="grid">
+                    <div class="links">
+                        <link-title id="title" ltitle="{{linkTitle}}"></link-title>
+                        <link-type id="type" ltype="{{linkType}}"></link-type>
+                    </div>
+                    <div class="mark">
+                        <like-dislike id="like" like="{{like}}"></like-dislike>
+                        <iron-star-rating id="starRating" value="{{starRating}}"></iron-star-rating>
+                    </div>
+                    <checked-sending flag="{{flag}}" sending="{{!flag}}"></checked-sending>
+                    <user-avatar avatar="{{userAvatar}}"></user-avatar>
                 </div>
-                <div class="mark">
-                    <like-dislike id="like" like="{{like}}"></like-dislike>
-                    <iron-star-rating id="starRating" value="{{starRating}}"></iron-star-rating>
-                </div>
-                <user-avatar avatar={{userAvatar}}></user-avatar>
-            </div>
                 <x-description id="description" description="{{description}}"></x-description>
                 <template is="dom-repeat" items="{{fields}}" index-as="index">
                     <x-field key="{{item.key}}" value="{{item.val}}" on-delete="removeFields"></x-field>
                 </template>
-            <paper-fab id="btnAdd" mini icon="add" on-tap="addFields"></paper-fab>
+                <paper-fab id="btnAdd" mini icon="add" on-tap="addFields"></paper-fab>
             </div>
         </template>
         <script src="plugin.js"></script>

@@ -12,20 +12,23 @@
 <dom-module id="sign-in">
     <template>
         <style>
-            :host{
+            :host {
                 display: flex;
                 justify-content: center;
             }
-            .provider{
+
+            .provider {
                 display: flex;
                 width: 60px;
                 height: 60px;
             }
-            paper-button{
+
+            paper-button {
                 border-radius: 50%;
-                padding:0;
+                padding: 0;
             }
-            .popup{
+
+            .popup {
                 --paper-tooltip-duration-in: 0ms;
                 --paper-tooltip-duration-out: 0ms;
             }
@@ -33,14 +36,14 @@
         <iron-ajax
                 id="getSignInUrl"
                 auto
-                url={{signInUrl}}
+                url="{{signInUrl}}"
                 handle-as="json"
                 on-response="getProviders">
         </iron-ajax>
         <iron-ajax
                 id="getUser"
                 auto
-                url={{getUser}}
+                url="{{getUser}}"
                 handle-as="json"
                 on-response="currentUser">
         </iron-ajax>
@@ -54,7 +57,7 @@
                 </iron-image>
             </paper-button>
             <paper-tooltip class="popup" for="{{item.id}}" position="top">{{item.id}}</paper-tooltip>
-    </template>
+        </template>
     </template>
     <script src="signIn.js"></script>
 </dom-module>

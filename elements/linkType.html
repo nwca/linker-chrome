@@ -25,8 +25,8 @@
         </style>
         <iron-ajax id="getAutoKey"
                    auto
-                   url={{autoKey}}
-                           handle-as="json"
+                   url="{{autoKey}}"
+                   handle-as="json"
                    last-response="{{handle}}">
         </iron-ajax>
         <paper-input id="type" value="{{ltype}}" placeholder="object type"></paper-input>
