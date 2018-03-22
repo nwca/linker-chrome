@@ -2,23 +2,26 @@
 <head>
     <link rel="import" href="/bower_components/polymer/polymer.html">
     <link rel="import" href="/bower_components/paper-input/index.html">
-    <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
-    <link rel="import" href="/bower_components/paper-autocomplete/paper-autocomplete-suggestions.html">
 </head>
 <body>
 <dom-module id="link-type">
     <template>
-        <iron-ajax id="getAutoKey"
-                   auto
-                   url={{autoKey}}
-                   handle-as="json"
-                   last-response="{{handle}}">
-        </iron-ajax>
-        <paper-input id="type" value="{{ltype}}"></paper-input>
-        <paper-autocomplete-suggestions
-                for="type"
-                source="{{handle.data.types}}">
-        </paper-autocomplete-suggestions>
+        <style>
+            paper-input {
+                --paper-input-container: {
+                    padding: 0 0 0 10px;
+                };
+                --paper-font-subhead_-_font-size: 14px;
+                --paper-input-container-input-color: #757575;
+                --paper-input-container-underline: {
+                    display: none;
+                };
+                --paper-font-caption: {
+                    display: none;
+                };
+            }
+        </style>
+        <paper-input value="{{ltype}}" placeholder="object type"></paper-input>
     </template>
     <script src="linkType.js"></script>
 </dom-module>

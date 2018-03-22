@@ -6,7 +6,20 @@
 <body>
 <dom-module id="link-title">
     <template>
-        <paper-input value="{{ltitle}}"></paper-input>
+        <style>
+            paper-input {
+                --paper-input-container: {
+                    padding: 10px 0 4px 10px;
+                };
+                --paper-input-container-underline: {
+                    display: none;
+                };
+                --paper-font-caption: {
+                    display: none;
+                };
+            }
+        </style>
+        <paper-input value="{{ltitle}}" placeholder="Page title"></paper-input>
     </template>
     <script src="linkTitle.js"></script>
 </dom-module>

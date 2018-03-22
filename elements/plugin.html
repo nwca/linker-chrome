@@ -6,7 +6,6 @@
     <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
     <link rel="import" href="/bower_components/paper-fab/paper-fab.html">
     <link rel="import" href="/bower_components/paper-spinner/paper-spinner.html">
-    <link rel="import" href="/bower_components/iron-star-rating/iron-star-rating.html">
     <link rel="import" href="/elements/field.html">
     <link rel="import" href="/elements/signIn.html">
     <link rel="import" href="/elements/avatar.html">
@@ -14,7 +13,6 @@
     <link rel="import" href="/elements/description.html">
     <link rel="import" href="/elements/linkType.html">
     <link rel="import" href="/elements/linkTitle.html">
-    <link rel="import" href="/elements/chekedSending.html">
 </head>
 <body>
     <dom-module id="my-plugin">
@@ -22,22 +20,21 @@
             <style>
                 :host{
                     display: block;
-                    width: 450px;
+                    width: 350px;
                 }
                 #btnAdd{
                     margin:auto;
                 }
                 .grid{
                     display: grid;
-                    grid-template-columns: 25px 200px 150px 50px;
-                    grid-gap: 10px;
+                    grid-template-columns: 1fr 125px 50px;
+                    grid-gap: 14px
                 }
                 .mark{
-                    margin-top:70px;
-                    margin-left: 20px
+                    margin-top:10px;
                 }
             </style>
-            <paper-spinner id="loader" active="{{loader}}"></paper-spinner>
+            <paper-spinner id="loader" active="{{loader}}" hidden$="{{!loader}}"></paper-spinner>
             <div id="providers" hidden$="{{loggedIn}}">
                 <sign-in id="signIn"></sign-in>
             </div>
@@ -54,13 +51,11 @@
                        body={{postFields}}
                        url={{fullUrl}}
                        handle-as="json"
-                       on-response="checkStatus"
                        content-type="application/json"
                        debounce-duration="1000">
             </iron-ajax>
             <div class="plugin" hidden$="{{!loggedIn}}">
             <div class="grid">
-                <checked-sending flag="{{flag}}" status="{{!flag}}"></checked-sending>
                 <div class="links">
                     <link-title id="title" ltitle="{{linkTitle}}"></link-title>
                     <link-type id="type" ltype="{{linkType}}"></link-type>
@@ -75,10 +70,10 @@
                 <template is="dom-repeat" items="{{fields}}" index-as="index">
                     <x-field key="{{item.key}}" value="{{item.val}}" on-delete="removeFields"></x-field>
                 </template>
-            <paper-fab id="btnAdd" mini icon="add" on-tap="addFields"></paper-fab>
+            </template>
             </div>
         </template>
-        <script src="plugin.js"></script>
+        <script src="plugin.html.0.js"></script>
     </dom-module>
 </body>
 </html>
