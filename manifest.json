@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "linker-chrome",
   "description": "linker-chrome",
-  "version": "1.0",
+  "version": "0.1",
   "browser_action": {
     "default_popup": "index.html"
   },
@@ -10,7 +10,6 @@
     "16": "icon.png",
     "48": "icon.png",
     "128": "icon.png"
-
   },
   "permissions": [
     "tabs",
