@@ -8,7 +8,7 @@ class SignIn extends Polymer.Element {
       return {
          base: {
             type: String,
-            value: "http://localhost:8080"
+            value: "https://linker-nw.appspot.com"
          },
          apiV1: {
             type: String,
@@ -80,7 +80,7 @@ class SignIn extends Polymer.Element {
    signIn(e) {
       let target = e.model;
       let index = this.providers.indexOf(target.get('item'));
-      chrome.tabs.create({url: this.providers[index].login_url});
+      chrome.tabs.create({url: this.base+this.providers[index].login_url});
    };
 }
 

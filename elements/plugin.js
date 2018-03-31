@@ -14,7 +14,7 @@ chrome.tabs.getSelected(null, tab => {
             },
             base: {
                type: String,
-               value: "http://localhost:8080"
+               value: "https://linker-nw.appspot.com"
             },
             apiV1: {
                type: String,
