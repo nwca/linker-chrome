@@ -6,22 +6,10 @@ class SignIn extends Polymer.Element {
 
    static get properties() {
       return {
-         base: {
-            type: String,
-            value: "https://linker-nw.appspot.com"
-         },
-         apiV1: {
-            type: String,
-            value: "/api/v1/"
-         },
-         signInUrl: {
-            type: String,
-            computed: 'computeFullSignUrl(base, apiV1)'
-         },
-         getUser: {
-            type: String,
-            computed: 'computeGetUser(base, apiV1)'
-         },
+          base: {
+              type: String,
+              value: "https://linker-nw.appspot.com"
+          },
          loggedIn: {
             type: Boolean,
             value: false,
@@ -43,6 +31,8 @@ class SignIn extends Polymer.Element {
 
    constructor() {
       super();
+      this.getProviders = this.getProviders.bind(this);
+       this.currentUser = this.currentUser.bind(this);
    }
 
    static get observers() {
@@ -50,14 +40,6 @@ class SignIn extends Polymer.Element {
    }
 
    _infoUser(loggedIn, userAvatar) {
-   }
-
-   computeFullSignUrl(base, apiV1) {
-      return base + apiV1 + "auth/providers"
-   }
-
-   computeGetUser(base, apiV1) {
-      return base + apiV1 + "me"
    }
 
    currentUser(e) {
@@ -68,7 +50,7 @@ class SignIn extends Polymer.Element {
    }
 
    getProviders(e) {
-      var resProv = e.detail.response.data;
+      let resProv = e.detail.response.data;
       const providers = Object.keys(resProv)
          .map(key => ({
             id: resProv.id,

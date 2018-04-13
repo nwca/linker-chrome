@@ -12,24 +12,16 @@ chrome.tabs.getSelected(null, tab => {
                type: String,
                value: tab.url
             },
-            base: {
-               type: String,
-               value: "https://linker-nw.appspot.com"
-            },
-            apiV1: {
-               type: String,
-               value: "/api/v1/"
-            },
-            fullUrl: {
-               type: String,
-               computed: 'computeFullUrl(base, url, apiV1)'
-            },
             fields: {
                type: Array,
                value: function () {
                   return [];
                }
             },
+             fullUrl: {
+               type: String,
+               computed: 'computeFullUrl(url)'
+             },
             postFields: {
                type: Object,
                value: null
@@ -74,17 +66,21 @@ chrome.tabs.getSelected(null, tab => {
 
       constructor() {
          super();
+          this.handle = this.handle.bind(this);
+          this.checkStatus = this.checkStatus.bind(this);
+          this._handleErrorResponse = this._handleErrorResponse.bind(this);
       }
+
+       computeFullUrl(url){
+         return "notes?url=" + (url);
+       }
 
       static get observers() {
          return ['changeFields(fields.*,getFields,starRating,description,like,linkType,linkTitle)']
       }
 
-      computeFullUrl(base, url, apiV1) {
-         return base + apiV1 + "notes?url=" + (url);
-      }
-
       checkStatus(e) {
+
          if (e.detail.status === 200) {
             this.flag = true;
          }
@@ -118,7 +114,7 @@ chrome.tabs.getSelected(null, tab => {
       }
 
       _handleErrorResponse(e) {
-         if (e.detail.request.xhr.status === 404) {
+         if (e.detail.request.xhr.status === 200) {
             this.$.xhr.generateRequest();
             this.$.getAjax.generateRequest();
          }

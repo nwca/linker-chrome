@@ -40,23 +40,17 @@
             <div id="providers" hidden$="{{loggedIn}}">
                 <sign-in id="signIn"></sign-in>
             </div>
-            <iron-ajax id="getAjax"
-                        auto
-                        url="{{fullUrl}}"
-                        handle-as="json"
-                        on-response="handle"
-                        on-error="_handleErrorResponse"
-                        loading="{{loader}}">
-            </iron-ajax>
-            <iron-ajax id="xhr"
-                       method="POST"
-                       body="{{postFields}}"
-                       url="{{fullUrl}}"
-                       handle-as="json"
-                       on-response="checkStatus"
-                       content-type="application/json"
-                       debounce-duration="1000">
-            </iron-ajax>
+            <send-request auto id="getAjax"
+                          path="{{fullUrl}}"
+                          handle="{{handle}}"
+                          on-error="{{handleErrorResponse}}"
+                          loading="{{loader}}"></send-request>
+            <send-request id="xhr"
+                          method="POST"
+                          body="{{postFields}}"
+                          path="{{fullUrl}}"
+                          handle="{{checkStatus}}"
+                          debounce-duration="1000"></send-request>
             <div class="plugin" hidden$="{{!loggedIn}}">
                 <div class="grid">
                     <div class="links">

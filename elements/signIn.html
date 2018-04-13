@@ -7,6 +7,7 @@
     <link rel="import" href="/bower_components/iron-image/iron-image.html">
     <link rel="import" href="/bower_components/paper-button/paper-button.html">
     <link rel="import" href="/bower_components/paper-tooltip/paper-tooltip.html">
+    <link rel="import" href="/elements/sendRequest.html">
 </head>
 <body>
 <dom-module id="sign-in">
@@ -33,20 +34,8 @@
                 --paper-tooltip-duration-out: 0ms;
             }
         </style>
-        <iron-ajax
-                id="getSignInUrl"
-                auto
-                url="{{signInUrl}}"
-                handle-as="json"
-                on-response="getProviders">
-        </iron-ajax>
-        <iron-ajax
-                id="getUser"
-                auto
-                url="{{getUser}}"
-                handle-as="json"
-                on-response="currentUser">
-        </iron-ajax>
+        <send-request auto path="auth/providers" handle="{{getProviders}}"></send-request>
+        <send-request auto path="me" handle="{{currentUser}}"></send-request>
         <template is="dom-repeat" items="{{providers}}">
             <paper-button class="btnSign">
                 <iron-image placeholder="/img/login-unrecognized.png"

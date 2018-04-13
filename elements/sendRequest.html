@@ -7,14 +7,20 @@
 <dom-module id="send-request">
     <template>
         <iron-ajax
-                   auto
-                   url="{{url}}"
+                   auto="{{auto}}"
+                   path
+                   method="{{method}}"
+                   url="{{authority}}"
                    handle-as="json"
+                   body="{{body}}"
+                   on-error="onError"
                    content-type="application/json"
-                   on-response="handle">
+                   on-response="handle"
+                   last-response="{{lastResponse}}"
+                   debounce-duration="{{debounceDuration}}">
         </iron-ajax>
     </template>
-    <script src="sendRequst.js"></script>
+    <script src="sendRequest.js"></script>
 </dom-module>
 </body>
 </html>

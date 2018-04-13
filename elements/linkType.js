@@ -10,25 +10,10 @@ class LType extends Polymer.Element {
             type: String,
             value: null,
             notify: true,
-         },
-         base: {
-            type: String,
-            value: "https://linker-nw.appspot.com"
-         },
-         apiV1: {
-            type: String,
-            value: "/api/v1/"
-         },
-         autoKey: {
-            type: String,
-            computed: 'computeFullUrl(base, apiV1)'
-         },
+         }
       }
    }
 
-   computeFullUrl(base, apiV1) {
-      return base + apiV1 + "types";
-   }
 
 }
 

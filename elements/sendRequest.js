@@ -6,14 +6,54 @@ class SendRequest extends Polymer.Element {
 
     static get properties() {
         return {
-            url: {
+            method: {
                 type: String,
-                notify: true,
+                notify: true
+            },
+            base: {
+                type: String,
+                value: "https://linker-nw.appspot.com"
+            },
+            apiV1: {
+                type: String,
+                value: "/api/v1/"
+            },
+            path:{
+                type: String,
+                notify: true
+            },
+            authority: {
+                type: String,
+                computed: 'computeAuthority(base, apiV1, path)'
+            },
+            lastResponse: {
+                type: Object,
+                notify: true
+            },
+            debounceDuration: {
+                type: Number,
+                notify: true
+            },
+            auto: {
+                type: Boolean,
+                notify: true
+            },
+            body: {
+                type: Object,
+                notify: true
             }
         }
     }
 
+    computeAuthority(base, apiV1,path) {
+        return base + apiV1 + path;
+    }
+
     handle(e){
+
+    }
+
+    onError(e) {
 
     }
 
