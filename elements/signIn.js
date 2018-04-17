@@ -12,7 +12,7 @@ class SignIn extends Polymer.Element {
           },
          loggedIn: {
             type: Boolean,
-            value: false,
+            value: null,
             notify: true
          },
          userAvatar: {
@@ -31,8 +31,6 @@ class SignIn extends Polymer.Element {
 
    constructor() {
       super();
-      this.getProviders = this.getProviders.bind(this);
-       this.currentUser = this.currentUser.bind(this);
    }
 
    static get observers() {
@@ -43,9 +41,12 @@ class SignIn extends Polymer.Element {
    }
 
    currentUser(e) {
+       console.log(this.loggedIn)
       if (e.detail.response.data !== null) {
-         this.loggedIn = !this.loggedIn;
+         this.loggedIn = true;
          this.userAvatar = e.detail.response.data.picture;
+      } else {
+         this.loggedIn = false;
       }
    }
 

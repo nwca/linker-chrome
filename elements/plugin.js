@@ -33,10 +33,6 @@ chrome.tabs.getSelected(null, tab => {
             userAvatar: {
                type: String
             },
-            loggedIn: {
-               type: Boolean,
-               value: null
-            },
             starRating: {
                type: Number,
                value: 0
@@ -60,15 +56,16 @@ chrome.tabs.getSelected(null, tab => {
             flag: {
                type: Boolean,
                value: true
+            },
+             spinner: {
+               type: Boolean,
+               value: true
             }
          }
       }
 
       constructor() {
          super();
-          this.handle = this.handle.bind(this);
-          this.checkStatus = this.checkStatus.bind(this);
-          this._handleErrorResponse = this._handleErrorResponse.bind(this);
       }
 
        computeFullUrl(url){
@@ -80,13 +77,15 @@ chrome.tabs.getSelected(null, tab => {
       }
 
       checkStatus(e) {
-
          if (e.detail.status === 200) {
             this.flag = true;
          }
       }
 
       handle(e) {
+          if (e.detail.status === 200) {
+             this.$.plugin.hidden = false;
+          }
          const note = e.detail.response.data.data || {};
          const {
             description,
@@ -110,14 +109,14 @@ chrome.tabs.getSelected(null, tab => {
             }));
          this.push('fields', ...fields);
          this.getFields = note;
-         Polymer.dom(this.root).removeChild(this.$.loader)
+         Polymer.dom(this.root).removeChild(this.$.spinner)
       }
 
-      _handleErrorResponse(e) {
-         if (e.detail.request.xhr.status === 200) {
-            this.$.xhr.generateRequest();
-            this.$.getAjax.generateRequest();
-         }
+      handleErrorResponse(e) {
+          if (e.detail.status === 401) {
+              this.$.providers.hidden = false;
+              Polymer.dom(this.root).removeChild(this.$.spinner)
+          }
       }
 
       addFields() {
@@ -132,7 +131,6 @@ chrome.tabs.getSelected(null, tab => {
 
       changeFields(changed) {
          this.userAvatar = this.$.signIn.userAvatar;
-         this.loggedIn = this.$.signIn.loggedIn;
          this.like = this.$.like.like;
          this.description = this.$.description.description;
          this.starRating = this.$.starRating.value;

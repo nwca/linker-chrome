@@ -13,9 +13,9 @@
                    url="{{authority}}"
                    handle-as="json"
                    body="{{body}}"
-                   on-error="onError"
+                   on-error="_error"
                    content-type="application/json"
-                   on-response="handle"
+                   on-response="_handle"
                    last-response="{{lastResponse}}"
                    debounce-duration="{{debounceDuration}}">
         </iron-ajax>
