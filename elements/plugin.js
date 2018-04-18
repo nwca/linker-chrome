@@ -56,10 +56,6 @@ chrome.tabs.getSelected(null, tab => {
             flag: {
                type: Boolean,
                value: true
-            },
-             spinner: {
-               type: Boolean,
-               value: true
             }
          }
       }
@@ -113,6 +109,10 @@ chrome.tabs.getSelected(null, tab => {
       }
 
       handleErrorResponse(e) {
+          if (e.detail.status === 404) {
+              this.$.xhr.$.req.generateRequest();
+              this.$.getAjax.$.req.generateRequest();
+          }
           if (e.detail.status === 401) {
               this.$.providers.hidden = false;
               Polymer.dom(this.root).removeChild(this.$.spinner)

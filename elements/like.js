@@ -8,34 +8,61 @@ class XLike extends Polymer.Element {
       return {
          like: {
             type: Boolean,
-            notify: true
-         }
+            notify: true,
+            observer: 'changeLike'
+         },
+          markLike:{
+             type: Number,
+              value: -1
+          },
+          markDisLike: {
+             type: Number,
+              value: -1
+          }
       }
    }
 
-   static get observers() {
-      return ['changeLike(like)']
-   }
-
-   changeLike(like) {
-      if (like === true) {
+   changeLike(newValue) {
+      if (newValue === true) {
          this.$.thumbUp.classList.add('active');
-      } else if (like === false) {
+         this.markLike++;
+      } else if (newValue === false) {
          this.$.thumbDown.classList.add('active');
+         this.markDisLike++;
       }
    }
 
    changer(e) {
-      if (e.target.id === 'thumbUp') {
-         this.like = true;
-         e.target.classList.add('active');
-         this.$.thumbDown.classList.remove('active');
-      } else {
-         this.like = false;
-         e.target.classList.add('active');
-         this.$.thumbUp.classList.remove('active');
-      }
-
+       if (this.like === true) {
+           this.markLike = 1;
+       }
+       if (this.like === false) {
+           this.markDisLike = 1;
+       }
+       if (e.target.id === 'thumbUp') {
+           this.like = true;
+           e.target.classList.add('active');
+           this.markLike++;
+           this.markDisLike = 1;
+           if((this.markLike % 2 === 0)) {
+               this.$.thumbUp.classList.remove('active');
+               this.like = null;
+               this.markLike = 1;
+           }
+           this.$.thumbDown.classList.remove('active');
+       }
+       else if (e.target.id === 'thumbDown') {
+           this.like = false;
+           this.markDisLike++;
+           this.markLike = 1;
+           e.target.classList.add('active');
+           if((this.markDisLike % 2 === 0)) {
+               this.$.thumbDown.classList.remove('active');
+               this.like = null;
+               this.markDisLike = 1;
+           }
+           this.$.thumbUp.classList.remove('active');
+       }
    }
 
 }
