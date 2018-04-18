@@ -49,12 +49,21 @@ class SendRequest extends Polymer.Element {
         return base + apiV1 + path;
     }
 
-    handle(e){
-
+    _handle(e){
+        this.dispatchEvent(new CustomEvent('handle',
+            {detail:
+                {
+                    status: e.detail.status,
+                    response: e.detail.response
+                }}));
     }
 
-    onError(e) {
-
+    _error(e) {
+        this.dispatchEvent(new CustomEvent('error',
+            {detail:
+                {
+                    status: e.detail.request.status,
+                }}));
     }
 
 }

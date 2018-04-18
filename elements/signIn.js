@@ -10,11 +10,6 @@ class SignIn extends Polymer.Element {
               type: String,
               value: "https://linker-nw.appspot.com"
           },
-         loggedIn: {
-            type: Boolean,
-            value: false,
-            notify: true
-         },
          userAvatar: {
             type: String,
             value: null,
@@ -31,20 +26,17 @@ class SignIn extends Polymer.Element {
 
    constructor() {
       super();
-      this.getProviders = this.getProviders.bind(this);
-       this.currentUser = this.currentUser.bind(this);
    }
 
    static get observers() {
-      return ['_infoUser(loggedIn, userAvatar)']
+      return ['_infoUser(userAvatar)']
    }
 
-   _infoUser(loggedIn, userAvatar) {
+   _infoUser(userAvatar) {
    }
 
    currentUser(e) {
       if (e.detail.response.data !== null) {
-         this.loggedIn = !this.loggedIn;
          this.userAvatar = e.detail.response.data.picture;
       }
    }

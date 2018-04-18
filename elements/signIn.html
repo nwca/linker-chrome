@@ -34,8 +34,8 @@
                 --paper-tooltip-duration-out: 0ms;
             }
         </style>
-        <send-request auto path="auth/providers" handle="{{getProviders}}"></send-request>
-        <send-request auto path="me" handle="{{currentUser}}"></send-request>
+        <send-request auto path="auth/providers" on-handle="getProviders"></send-request>
+        <send-request auto path="me" on-handle="currentUser"></send-request>
         <template is="dom-repeat" items="{{providers}}">
             <paper-button class="btnSign">
                 <iron-image placeholder="/img/login-unrecognized.png"

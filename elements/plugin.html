@@ -35,23 +35,29 @@
                 .mark{
                     margin-top:10px;
                 }
+                #spinner{
+                    width: 28px;
+                    margin: auto;
+                }
             </style>
-            <paper-spinner id="loader" active="{{loader}}" hidden$="{{!loader}}"></paper-spinner>
-            <div id="providers" hidden$="{{loggedIn}}">
+            <div id="spinner">
+            <paper-spinner id="loader" active></paper-spinner>
+            </div>
+            <div id="providers" hidden="false">
                 <sign-in id="signIn"></sign-in>
             </div>
             <send-request auto id="getAjax"
                           path="{{fullUrl}}"
-                          handle="{{handle}}"
-                          on-error="{{handleErrorResponse}}"
-                          loading="{{loader}}"></send-request>
+                          on-handle="handle"
+                          on-error="handleErrorResponse">
+            </send-request>
             <send-request id="xhr"
                           method="POST"
                           body="{{postFields}}"
                           path="{{fullUrl}}"
-                          handle="{{checkStatus}}"
+                          on-handle="checkStatus"
                           debounce-duration="1000"></send-request>
-            <div class="plugin" hidden$="{{!loggedIn}}">
+            <div id="plugin" hidden="false">
                 <div class="grid">
                     <div class="links">
                         <link-title id="title" ltitle="{{linkTitle}}"></link-title>
