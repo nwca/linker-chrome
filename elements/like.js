@@ -11,6 +11,10 @@ class XLike extends Polymer.Element {
             notify: true,
             observer: 'changeLike'
          },
+          disLike: {
+             type: Boolean,
+              value: false
+          },
           markLike:{
              type: Number,
               value: -1
@@ -24,13 +28,19 @@ class XLike extends Polymer.Element {
 
    changeLike(newValue) {
       if (newValue === true) {
-         this.$.thumbUp.classList.add('active');
+         this.disLike = false;
          this.markLike++;
       } else if (newValue === false) {
-         this.$.thumbDown.classList.add('active');
+         this.disLike = true;
          this.markDisLike++;
       }
    }
+
+    getClasses(like) {
+        let classes = 'thumb';
+        if(like) classes += ' active';
+        return classes;
+    }
 
    changer(e) {
        if (this.like === true) {
@@ -41,27 +51,22 @@ class XLike extends Polymer.Element {
        }
        if (e.target.id === 'thumbUp') {
            this.like = true;
-           e.target.classList.add('active');
            this.markLike++;
            this.markDisLike = 1;
            if((this.markLike % 2 === 0)) {
-               this.$.thumbUp.classList.remove('active');
                this.like = null;
                this.markLike = 1;
            }
-           this.$.thumbDown.classList.remove('active');
        }
        else if (e.target.id === 'thumbDown') {
            this.like = false;
            this.markDisLike++;
            this.markLike = 1;
-           e.target.classList.add('active');
            if((this.markDisLike % 2 === 0)) {
-               this.$.thumbDown.classList.remove('active');
                this.like = null;
+               this.disLike = null;
                this.markDisLike = 1;
            }
-           this.$.thumbUp.classList.remove('active');
        }
    }
 

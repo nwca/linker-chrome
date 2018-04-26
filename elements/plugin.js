@@ -12,6 +12,10 @@ chrome.tabs.getSelected(null, tab => {
                type: String,
                value: tab.url
             },
+             bar: {
+               type: Boolean,
+                 value: false
+             },
             fields: {
                type: Array,
                value: function () {
@@ -21,6 +25,10 @@ chrome.tabs.getSelected(null, tab => {
              fullUrl: {
                type: String,
                computed: 'computeFullUrl(url)'
+             },
+             loggedIn: {
+               type: Boolean,
+               value: false
              },
             postFields: {
                type: Object,
@@ -79,10 +87,8 @@ chrome.tabs.getSelected(null, tab => {
       }
 
       handle(e) {
-          if (e.detail.status === 200) {
-             this.$.plugin.hidden = false;
-          }
          const note = e.detail.response.data.data || {};
+         this.loggedIn = this.$.signIn.loggedIn;
          const {
             description,
             star,
@@ -105,17 +111,22 @@ chrome.tabs.getSelected(null, tab => {
             }));
          this.push('fields', ...fields);
          this.getFields = note;
-         Polymer.dom(this.root).removeChild(this.$.spinner)
       }
 
       handleErrorResponse(e) {
+          if(e.detail.status%100 === 4) {
           if (e.detail.status === 404) {
               this.$.xhr.$.req.generateRequest();
               this.$.getAjax.$.req.generateRequest();
           }
           if (e.detail.status === 401) {
-              this.$.providers.hidden = false;
-              Polymer.dom(this.root).removeChild(this.$.spinner)
+             this.bar = true;
+              this.$.spinner.hidden = true;
+          } else {
+             console.log(e.detail.statusText)
+          }
+          } else if (e.detail.status%100 === 5) {
+             console.log(e.detail.statusText)
           }
       }
 

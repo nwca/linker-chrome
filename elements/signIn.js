@@ -15,6 +15,11 @@ class SignIn extends Polymer.Element {
             value: null,
             notify: true
          },
+          loggedIn: {
+              type: Boolean,
+              value: false,
+              notify: true
+          },
          providers: {
             type: Array,
             value: function () {
@@ -38,6 +43,7 @@ class SignIn extends Polymer.Element {
    currentUser(e) {
       if (e.detail.response.data !== null) {
          this.userAvatar = e.detail.response.data.picture;
+          this.loggedIn = true;
       }
    }
 
