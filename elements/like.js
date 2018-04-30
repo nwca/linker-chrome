@@ -33,7 +33,7 @@ class XLike extends Polymer.Element {
         }
     }
 
-   chenger(e) {
+   changer(e) {
         if (e.currentTarget.id === 'thumbUp') {
             this.like = !this.like;
             if (this.like === true) {
