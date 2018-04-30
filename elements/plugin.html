@@ -15,6 +15,7 @@
     <link rel="import" href="/elements/linkType.html">
     <link rel="import" href="/elements/linkTitle.html">
     <link rel="import" href="/elements/chekedSending.html">
+    <link rel="import" href="/elements/errorMessage.html">
 </head>
 <body>
     <dom-module id="my-plugin">
@@ -43,14 +44,17 @@
             <div id="spinner" hidden$="{{loggedIn}}">
             <paper-spinner id="loader" active = {{!loggedIn}}></paper-spinner>
             </div>
+            <template is="dom-if" if="{{!flag}}">
+                <error-message error-message="{{errorMessage}}"></error-message>
+            </template>
+            <div id="providers" hidden$="{{!provShow}}">
+                <sign-in id="signIn"></sign-in>
+            </div>
             <send-request auto id="getAjax"
                           path="{{fullUrl}}"
                           on-handle="handle"
                           on-error="handleErrorResponse">
             </send-request>
-            <div id="providers" hidden$="{{!bar}}">
-                <sign-in id="signIn"></sign-in>
-            </div>
             <send-request id="xhr"
                           method="POST"
                           body="{{postFields}}"
@@ -64,7 +68,7 @@
                         <link-type id="type" ltype="{{linkType}}"></link-type>
                     </div>
                     <div class="mark">
-                        <like-dislike id="like" like="{{like}}"></like-dislike>
+                        <like-dislike id="like" mark="{{like}}"></like-dislike>
                         <iron-star-rating id="starRating" value="{{starRating}}"></iron-star-rating>
                     </div>
                     <checked-sending flag="{{flag}}" sending="{{!flag}}"></checked-sending>

@@ -12,7 +12,7 @@ chrome.tabs.getSelected(null, tab => {
                type: String,
                value: tab.url
             },
-             bar: {
+             provShow: {
                type: Boolean,
                  value: false
              },
@@ -64,6 +64,9 @@ chrome.tabs.getSelected(null, tab => {
             flag: {
                type: Boolean,
                value: true
+            },
+            errorMessage: {
+               type: String
             }
          }
       }
@@ -114,19 +117,15 @@ chrome.tabs.getSelected(null, tab => {
       }
 
       handleErrorResponse(e) {
-          if(e.detail.status%100 === 4) {
-          if (e.detail.status === 404) {
-              this.$.xhr.$.req.generateRequest();
-              this.$.getAjax.$.req.generateRequest();
-          }
-          if (e.detail.status === 401) {
-             this.bar = true;
-              this.$.spinner.hidden = true;
-          } else {
-             console.log(e.detail.statusText)
-          }
-          } else if (e.detail.status%100 === 5) {
-             console.log(e.detail.statusText)
+          if ((e.detail.status >= 400) && (e.detail.status <= 500)) {
+              this.errorMessage = e.detail.status;
+              if (e.detail.status === 404) {
+                  this.$.xhr.$.req.generateRequest();
+                  this.$.getAjax.$.req.generateRequest();
+              } else if (e.detail.status === 401) {
+                  this.provShow = true;
+                  this.$.spinner.hidden = true;
+              }
           }
       }
 
@@ -142,7 +141,7 @@ chrome.tabs.getSelected(null, tab => {
 
       changeFields(changed) {
          this.userAvatar = this.$.signIn.userAvatar;
-         this.like = this.$.like.like;
+         this.like = this.$.like.mark;
          this.description = this.$.description.description;
          this.starRating = this.$.starRating.value;
          this.linkTitle = this.$.title.ltitle;
