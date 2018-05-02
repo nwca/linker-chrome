@@ -10,16 +10,6 @@ class SignIn extends Polymer.Element {
               type: String,
               value: "https://linker-nw.appspot.com"
           },
-         userAvatar: {
-            type: String,
-            value: null,
-            notify: true
-         },
-          loggedIn: {
-              type: Boolean,
-              value: false,
-              notify: true
-          },
          providers: {
             type: Array,
             value: function () {
@@ -45,10 +35,9 @@ class SignIn extends Polymer.Element {
           this.dispatchEvent(new CustomEvent('picture',
               {detail:
                   {
-                      picture: e.detail.response.data.picture
+                      picture: e.detail.response.data.picture,
+                      loggedIn: true
                   }}));
-         this.userAvatar = e.detail.response.data.picture;
-         this.loggedIn = true;
       }
    }
 

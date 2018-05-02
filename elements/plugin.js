@@ -85,6 +85,7 @@ chrome.tabs.getSelected(null, tab => {
 
        userPicture(e) {
           this.userAvatar = e.detail.picture;
+          this.loggedIn = e.detail.loggedIn;
       }
 
       checkStatus(e) {
@@ -95,7 +96,6 @@ chrome.tabs.getSelected(null, tab => {
 
       handle(e) {
          const note = e.detail.response.data.data || {};
-         this.loggedIn = this.$.signIn.loggedIn;
          const {
             description,
             star,
@@ -125,7 +125,6 @@ chrome.tabs.getSelected(null, tab => {
               this.errorMessage = e.detail.status;
               if (e.detail.status === 404) {
                   this.$.xhr.auto = true;
-                  this.loggedIn = true;
               } else if (e.detail.status === 401) {
                   this.provShow = true;
                   this.$.spinner.hidden = true;
@@ -154,7 +153,7 @@ chrome.tabs.getSelected(null, tab => {
                acc[obj.key] = obj.val;
                return acc;
             }, {});
-         if ((this.description !== ' ') && (this.description !== '')) {
+         if (this.description !== '') {
             result['description'] = this.description;
          }
          if (this.like !== null) {
