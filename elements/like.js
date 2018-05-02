@@ -30,6 +30,9 @@ class XLike extends Polymer.Element {
             this.like = true;
         } else if (newValue === false) {
             this.disLike = true;
+        } else if ((newValue === null) || (newValue === undefined)) {
+            this.like = false;
+            this.disLike = false;
         }
     }
 
@@ -53,13 +56,11 @@ class XLike extends Polymer.Element {
        }
    }
 
-
     getClasses(like) {
         let classes = 'thumb';
         if(like) classes += ' active';
         return classes;
     }
-
 }
 
 customElements.define(XLike.is, XLike);

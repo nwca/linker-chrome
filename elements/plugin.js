@@ -61,7 +61,7 @@ chrome.tabs.getSelected(null, tab => {
                type: String,
                value: null
             },
-            flag: {
+            visible: {
                type: Boolean,
                value: true
             },
@@ -85,7 +85,7 @@ chrome.tabs.getSelected(null, tab => {
 
       checkStatus(e) {
          if (e.detail.status === 200) {
-            this.flag = true;
+            this.visible = true;
          }
       }
 
@@ -117,7 +117,7 @@ chrome.tabs.getSelected(null, tab => {
       }
 
       handleErrorResponse(e) {
-          if ((e.detail.status >= 400) && (e.detail.status <= 500)) {
+          if ((e.detail.status >= 400) && (e.detail.status < 600)) {
               this.errorMessage = e.detail.status;
               if (e.detail.status === 404) {
                   this.$.xhr.$.req.generateRequest();
@@ -169,7 +169,7 @@ chrome.tabs.getSelected(null, tab => {
          this.postFields = JSON.stringify({id: this.fullUrl, data: result});
          if ((this.getFields !== null) && (JSON.stringify(this.getFields) !== JSON.stringify(result))) {
             this.$.xhr.auto = 'true';
-            this.flag = false;
+            this.visible = false;
          }
       }
    }

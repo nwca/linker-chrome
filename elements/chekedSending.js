@@ -6,7 +6,7 @@ class CSending extends Polymer.Element {
 
    static get properties() {
       return {
-         flag: {
+         visible: {
             type: Boolean,
             value: null
          },

@@ -44,7 +44,7 @@
             <div id="spinner" hidden$="{{loggedIn}}">
             <paper-spinner id="loader" active = {{!loggedIn}}></paper-spinner>
             </div>
-            <template is="dom-if" if="{{!flag}}">
+            <template is="dom-if" if="{{!visible}}">
                 <error-message error-message="{{errorMessage}}"></error-message>
             </template>
             <div id="providers" hidden$="{{!provShow}}">
@@ -71,7 +71,7 @@
                         <like-dislike id="like" mark="{{like}}"></like-dislike>
                         <iron-star-rating id="starRating" value="{{starRating}}"></iron-star-rating>
                     </div>
-                    <checked-sending flag="{{flag}}" sending="{{!flag}}"></checked-sending>
+                    <checked-sending visible="{{visible}}" sending="{{!visible}}"></checked-sending>
                     <user-avatar avatar="{{userAvatar}}"></user-avatar>
                 </div>
                 <x-description id="description" description="{{description}}"></x-description>
