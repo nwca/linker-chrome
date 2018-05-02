@@ -42,8 +42,13 @@ class SignIn extends Polymer.Element {
 
    currentUser(e) {
       if (e.detail.response.data !== null) {
+          this.dispatchEvent(new CustomEvent('picture',
+              {detail:
+                  {
+                      picture: e.detail.response.data.picture
+                  }}));
          this.userAvatar = e.detail.response.data.picture;
-          this.loggedIn = true;
+         this.loggedIn = true;
       }
    }
 

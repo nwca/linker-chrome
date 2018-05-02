@@ -51,7 +51,7 @@ chrome.tabs.getSelected(null, tab => {
             },
             description: {
                type: String,
-               value: ' '
+               value: ''
             },
             linkType: {
                type: String,
@@ -81,6 +81,10 @@ chrome.tabs.getSelected(null, tab => {
 
       static get observers() {
          return ['changeFields(fields.*,getFields,starRating,description,like,linkType,linkTitle)']
+      }
+
+       userPicture(e) {
+          this.userAvatar = e.detail.picture;
       }
 
       checkStatus(e) {
@@ -120,8 +124,8 @@ chrome.tabs.getSelected(null, tab => {
           if ((e.detail.status >= 400) && (e.detail.status < 600)) {
               this.errorMessage = e.detail.status;
               if (e.detail.status === 404) {
-                  this.$.xhr.$.req.generateRequest();
-                  this.$.getAjax.$.req.generateRequest();
+                  this.$.xhr.auto = true;
+                  this.loggedIn = true;
               } else if (e.detail.status === 401) {
                   this.provShow = true;
                   this.$.spinner.hidden = true;
@@ -140,7 +144,6 @@ chrome.tabs.getSelected(null, tab => {
       }
 
       changeFields(changed) {
-         this.userAvatar = this.$.signIn.userAvatar;
          this.like = this.$.like.mark;
          this.description = this.$.description.description;
          this.starRating = this.$.starRating.value;
