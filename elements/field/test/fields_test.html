@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+    <link rel="import" href="../field.html">
+    <title>Document</title>
+</head>
+<body>
+
+<test-fixture id="fields">
+    <template>
+        <x-field key="key" value="value"></x-field>
+    </template>
+</test-fixture>
+
+<script>
+suite('paper-fab', function() {
+
+    setup(function () {
+        myEl = fixture('fields');
+    });
+    test('Checked binding attribute component fields ', function () {
+        assert.equal(myEl.key, 'key');
+        assert.equal(myEl.value, 'value');
+    });
+    test('Set custom event delete', function (done) {
+        myEl.addEventListener('delete', function () {
+            done();
+        });
+    })
+});
+
+</script>
+
+</body>
+</html>

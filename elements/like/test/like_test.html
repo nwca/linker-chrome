@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+    <link rel="import" href="../linkTitle.html">
+    <title>Document</title>
+</head>
+<body>
+
+<test-fixture id="like">
+    <template>
+        <paper-fab class></paper-fab>
+    </template>
+</test-fixture>
+<test-fixture id="disLike">
+    <template>
+        <paper-fab class></paper-fab>
+    </template>
+</test-fixture>
+
+<script>
+suite('paper-fab', function() {
+  var buttonLike;
+  var buttonDisLike;
+  var like = false;
+  var disLike = false;
+
+  setup( function() {
+      buttonLike = fixture('like');
+      buttonDisLike = fixture('disLike');
+      buttonLike.setAttribute('class','thumb');
+      buttonDisLike.setAttribute('class','thumb');
+      stub('paper-fab', {
+        click: function() {
+            console.log('Button clicked');
+        }
+      })
+  });
+  test('Click button like', function() {
+    buttonLike.click();
+    like = !like;
+    disLike = false;
+    assert.equal(like,true);
+    assert.equal(buttonLike.classList.value,'thumb');
+    buttonLike.classList.add('active');
+    assert.equal(buttonLike.classList.value,'thumb active');
+    buttonDisLike.classList.remove('active');
+    assert.equal(buttonDisLike.classList.value,'thumb');
+  });
+    test('Click button disLike', function() {
+        buttonLike.click();
+        disLike = !disLike;
+        like = false;
+        assert.equal(disLike,true);
+        assert.equal(buttonDisLike.classList.value,'thumb');
+        buttonDisLike.classList.add('active');
+        assert.equal(buttonDisLike.classList.value,'thumb active');
+        buttonLike.classList.remove('active');
+        assert.equal(buttonLike.classList.value,'thumb');
+    })
+})
+
+</script>
+
+</body>
+</html>

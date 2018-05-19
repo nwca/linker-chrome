@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+    <link rel="import" href="../chekedSending.html">
+    <title>Document</title>
+</head>
+<body>
+
+<test-fixture id="test-checkedSending">
+    <template>
+        <checked-sending visible status></checked-sending>
+    </template>
+</test-fixture>
+
+<script>
+    var myEl;
+
+    setup(function () {
+        myEl = fixture('test-checkedSending');
+    });
+
+    suite('<checked-sending>', function () {
+        test('test binding component checkedSending', function () {
+            myEl.visible = true;
+            myEl.status = false;
+            assert.equal(myEl.visible, true);
+            assert.equal(myEl.status, false);
+        });
+    });
+
+</script>
+
+</body>
+</html>
