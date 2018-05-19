@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+    <link rel="import" href="../plugin.html">
+    <title>Document</title>
+</head>
+<body>
+
+<test-fixture id="test-plugin">
+    <template>
+        <my-plugin>
+        </my-plugin>
+    </template>
+</test-fixture>
+
+<script>
+    var myEl;
+    var plugin;
+    var field = {};
+    var fields = [];
+    setup(function () {
+        myEl = fixture('test-plugin');
+        plugin = Polymer.dom(myEl.root).querySelector('#plugin');
+        stub('paper-fab',{
+            click: function () {
+                fields.push(field);
+            }
+        });
+    });
+
+    suite('my-plugin', function () {
+        test('Push field in array fields by click button add', function (done) {
+            var btnAdd = plugin.querySelector('#btnAdd');
+            expect(fields.length).to.be.equal(0);
+            btnAdd.click();
+            expect(fields.length).to.be.equal(1);
+            done();
+        });
+        test('Correct formation of notes', function () {
+            var title = plugin.querySelector('link-title');
+            var type = plugin.querySelector('link-type');
+            var description = plugin.querySelector('x-description');
+            var star = plugin.querySelector('iron-star-rating');
+            var like = plugin.querySelector('like-dislike');
+            var note = plugin.querySelector('x-field');
+            title.setAttribute('ltitle','title');
+            type.setAttribute('ltype','type');
+            description.setAttribute('description','description');
+            star.setAttribute('value',1);
+            like.setAttribute('like','true');
+            note.setAttribute('key','key');
+            note.setAttribute('value','value');
+            field = {
+                description: description.description,
+                title: title.ltitle,
+                type: type.ltype,
+                star: star.value,
+                like: like.like,
+            };
+            field[note.key] = note.value;
+            expect(field['title']).to.be.equal('title');
+            expect(field['type']).to.be.equal('type');
+            expect(field['description']).to.be.equal('description');
+            expect(field['star']).to.be.equal(1);
+            expect(field['like']).to.be.equal(true);
+            expect(field['key']).to.be.equal('value');
+        });
+    });
+</script>
+
+</body>
+</html>

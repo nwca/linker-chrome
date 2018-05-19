@@ -1,0 +1,27 @@
+<html>
+<head>
+    <link rel="import" href="/bower_components/polymer/polymer.html">
+    <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+</head>
+<body>
+<dom-module id="send-request">
+    <template>
+        <iron-ajax
+                   id="req"
+                   auto="{{auto}}"
+                   path
+                   method="{{method}}"
+                   url="{{authority}}"
+                   handle-as="json"
+                   body="{{body}}"
+                   on-error="_error"
+                   content-type="application/json"
+                   on-response="_handle"
+                   last-response="{{lastResponse}}"
+                   debounce-duration="{{debounceDuration}}">
+        </iron-ajax>
+    </template>
+    <script src="sendRequest.js"></script>
+</dom-module>
+</body>
+</html>

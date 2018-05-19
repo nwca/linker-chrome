@@ -12,24 +12,24 @@ chrome.tabs.getSelected(null, tab => {
                type: String,
                value: tab.url
             },
-            base: {
-               type: String,
-               value: "https://linker-nw.appspot.com"
-            },
-            apiV1: {
-               type: String,
-               value: "/api/v1/"
-            },
-            fullUrl: {
-               type: String,
-               computed: 'computeFullUrl(base, url, apiV1)'
-            },
+             provShow: {
+               type: Boolean,
+                 value: false
+             },
             fields: {
                type: Array,
                value: function () {
                   return [];
                }
             },
+             fullUrl: {
+               type: String,
+               computed: 'computeFullUrl(url)'
+             },
+             loggedIn: {
+               type: Boolean,
+               value: false
+             },
             postFields: {
                type: Object,
                value: null
@@ -41,10 +41,6 @@ chrome.tabs.getSelected(null, tab => {
             userAvatar: {
                type: String
             },
-            loggedIn: {
-               type: Boolean,
-               value: null
-            },
             starRating: {
                type: Number,
                value: 0
@@ -55,7 +51,7 @@ chrome.tabs.getSelected(null, tab => {
             },
             description: {
                type: String,
-               value: ' '
+               value: ''
             },
             linkType: {
                type: String,
@@ -65,9 +61,12 @@ chrome.tabs.getSelected(null, tab => {
                type: String,
                value: null
             },
-            flag: {
+            visible: {
                type: Boolean,
                value: true
+            },
+            errorMessage: {
+               type: String
             }
          }
       }
@@ -76,17 +75,22 @@ chrome.tabs.getSelected(null, tab => {
          super();
       }
 
+       computeFullUrl(url){
+         return "notes?url=" + (url);
+       }
+
       static get observers() {
          return ['changeFields(fields.*,getFields,starRating,description,like,linkType,linkTitle)']
       }
 
-      computeFullUrl(base, url, apiV1) {
-         return base + apiV1 + "notes?url=" + (url);
+       userPicture(e) {
+          this.userAvatar = e.detail.picture;
+          this.loggedIn = e.detail.loggedIn;
       }
 
       checkStatus(e) {
          if (e.detail.status === 200) {
-            this.flag = true;
+            this.visible = true;
          }
       }
 
@@ -114,14 +118,18 @@ chrome.tabs.getSelected(null, tab => {
             }));
          this.push('fields', ...fields);
          this.getFields = note;
-         Polymer.dom(this.root).removeChild(this.$.loader)
       }
 
-      _handleErrorResponse(e) {
-         if (e.detail.request.xhr.status === 404) {
-            this.$.xhr.generateRequest();
-            this.$.getAjax.generateRequest();
-         }
+      handleErrorResponse(e) {
+          if ((e.detail.status >= 400) && (e.detail.status < 600)) {
+              this.errorMessage = e.detail.status;
+              if (e.detail.status === 404) {
+                  this.$.xhr.auto = true;
+              } else if (e.detail.status === 401) {
+                  this.provShow = true;
+                  this.$.spinner.hidden = true;
+              }
+          }
       }
 
       addFields() {
@@ -135,9 +143,7 @@ chrome.tabs.getSelected(null, tab => {
       }
 
       changeFields(changed) {
-         this.userAvatar = this.$.signIn.userAvatar;
-         this.loggedIn = this.$.signIn.loggedIn;
-         this.like = this.$.like.like;
+         this.like = this.$.like.mark;
          this.description = this.$.description.description;
          this.starRating = this.$.starRating.value;
          this.linkTitle = this.$.title.ltitle;
@@ -147,7 +153,7 @@ chrome.tabs.getSelected(null, tab => {
                acc[obj.key] = obj.val;
                return acc;
             }, {});
-         if ((this.description !== ' ') && (this.description !== '')) {
+         if (this.description !== '') {
             result['description'] = this.description;
          }
          if (this.like !== null) {
@@ -165,7 +171,7 @@ chrome.tabs.getSelected(null, tab => {
          this.postFields = JSON.stringify({id: this.fullUrl, data: result});
          if ((this.getFields !== null) && (JSON.stringify(this.getFields) !== JSON.stringify(result))) {
             this.$.xhr.auto = 'true';
-            this.flag = false;
+            this.visible = false;
          }
       }
    }

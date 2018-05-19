@@ -5,7 +5,7 @@
 <link rel="import" href="/bower_components/paper-input/paper-input.html">
 <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="/bower_components/paper-fab/paper-fab.html">
-<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/elements/sendingRequest/sendRequest.html">
 <link rel="import" href="/bower_components/paper-autocomplete/paper-autocomplete-suggestions.html">
 <body>
 <dom-module id="x-field">
@@ -36,12 +36,7 @@
                 };
             }
         </style>
-        <iron-ajax id="getAutoKey"
-                   auto
-                   url="{{autoKey}}"
-                   handle-as="json"
-                   last-response="{{handle}}">
-        </iron-ajax>
+        <send-request auto path="preds?q=" last-response="{{handle}}"></send-request>
         <form class="form">
             <paper-input class="pInput" id="myInput" value="{{key}}"></paper-input>
             <paper-autocomplete-suggestions
